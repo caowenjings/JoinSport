@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
        TimerTask task=new TimerTask() {//定时器延期执行
            @Override
            public void run() {
-               Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
+               Intent intent=new Intent(WelcomeActivity.this,LoginActivity.class);
                startActivity(intent);
                finish();
            }
