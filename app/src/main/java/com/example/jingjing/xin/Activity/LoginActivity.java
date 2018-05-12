@@ -94,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.btn_forgetpwd:
+                Intent intent1 = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent1);
                 break;
 
         }
