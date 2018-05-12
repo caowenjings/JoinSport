@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <!--轮播图banner-->
+   <com.youth.banner.Banner
+       android:id="@+id/baner_find"
+       android:layout_width="match_parent"
+       android:layout_height="200dp"
+       app:indicator_width="10dp"
+       app:indicator_height="10dp"
+       android:layout_margin="4dp"
+       app:indicator_drawable_unselected="@color/colorwhite"
+       app:indicator_drawable_selected="@color/colorblue">
+   </com.youth.banner.Banner>
+   <!--Gridview-->
+   <GridView
+       android:id="@+id/grid_find"
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:numColumns="3"></GridView>
+
+</LinearLayout>

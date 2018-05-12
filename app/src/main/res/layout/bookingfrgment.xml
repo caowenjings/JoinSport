@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:include="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--轮播图banner-->
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="4dp"
+        app:indicator_width="10dp"
+        app:indicator_height="10dp"
+        app:indicator_drawable_unselected="@color/colorwhite"
+        app:indicator_drawable_selected="@color/colorblue"></com.youth.banner.Banner>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/dots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@color/colorYellow">
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="20dp"
+            android:layout_height="60dp"
+            android:ems="1"
+            android:gravity="center"
+            android:text="公告栏"
+            android:textColor="@color/colorred"
+            android:textSize="17dp" />
+        <View
+            android:layout_marginRight="10dp"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorqianhui" />
+
+        <com.alex.widget.banner.tips.TipsBanner
+            android:id="@+id/tipsbanner"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:delay_time="3000"
+            app:is_auto_play="true"
+            app:is_scroll="false"
+            app:scroll_duration="4000"
+            app:tips_layout="@layout/gonggaolan_tips"></com.alex.widget.banner.tips.TipsBanner>
+    </LinearLayout>
+</LinearLayout>
