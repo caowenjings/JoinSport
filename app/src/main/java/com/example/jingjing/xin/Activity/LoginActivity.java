@@ -1,5 +1,7 @@
 package com.example.jingjing.xin.Activity;
 
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -12,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -31,6 +34,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static com.example.jingjing.xin.constant.Conatant.URL_LOGIN;
 
 /**
@@ -45,6 +50,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_login;
     private String username,password;
     private CheckBox remember_pwd;
+
+    private View inflate;//用于忘记密码
+    private TextView tv_find_password;
+    private TextView tv_cancel;
+    private Dialog dialog;
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -52,6 +63,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
+        android.support.v7.app.ActionBar actionBar =getSupportActionBar();
+        actionBar.hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.login);
 
         initView();
@@ -71,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initData() {
         btn_login.setOnClickListener(this);
         btn_register.setOnClickListener(this);
-        btn_forgetpwd.setOnClickListener(this);
     }
     public void getEditString(){
         username=et_username.getText().toString();
@@ -92,10 +106,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_register:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.btn_forgetpwd:
-                Intent intent1 = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent1);
                 break;
 
         }
@@ -162,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 //实现页面跳转
                                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                                 Bundle mBundle = new Bundle();
-                                mBundle.putString("user", String.valueOf(user));
+                                mBundle.putSerializable("user", user);
                                 intent.putExtras(mBundle);
                                 startActivity(intent);
                                 finish();
@@ -181,4 +191,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         }
-    }}
+    }
+
+}

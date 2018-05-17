@@ -1,5 +1,6 @@
 package com.example.jingjing.xin.Activity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,12 +61,10 @@ public class RegisterActivity extends AppCompatActivity {
     private RadioGroup rg_sex;
     private RadioButton rb_male;
     private RadioButton rb_female;
-    private RadioGroup rg_right;
-    private RadioButton rb_user;
-    private RadioButton rb_stadiumuser;
     private String sex;
     private String myright;
     private String username,password,confirmmpwd,realname,tel;
+    private User user;
 
     //MediaType使用两部分标识符来确定一个类型，来表明传的东西时什么类型
 //提交json数据
@@ -74,6 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.support.v7.app.ActionBar actionBar =getSupportActionBar();
+        actionBar.hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.register);
         initView();
         initData();
@@ -116,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                         break;
                     case R.id.rb_female:
                         sex = rb_female.getText().toString();
+                        break;
                 }
             }
         });
@@ -159,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
         return m.matches();
     }
 
-    public void getEditString(){
+    public void getEditString(){//得到用户输入信息
         username=et_username.getText().toString();
         password=et_password.getText().toString();
         tel=et_tel.getText().toString();
@@ -180,7 +184,7 @@ public class RegisterActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {//执行耗时操作，带参get请求（Params是传入的参数）
             Response response = null;
             String results = null;
-            User user = new User();
+             user = new User();
             JSONObject json = new JSONObject();//用于添加参数
             try {
                 json.put("username", params[1]);
@@ -220,6 +224,9 @@ public class RegisterActivity extends AppCompatActivity {
                            public boolean handleMessage(Message arg0) {
                                 //实现页面跳转
                                 Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                              // Bundle bundle = new Bundle();
+                                //bundle.putSerializable("user",user);
+                               //intent.putExtras(bundle);
                                 startActivity(intent);
                                 finish();
                                 return false;

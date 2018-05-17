@@ -39,7 +39,7 @@ import static java.security.AccessController.getContext;
 /**
  * Created by jingjing on 2018/4/24.
  */
-public class BookingFragment extends BaseFragment implements OnBannerListener {
+public class  BookingFragment extends BaseFragment implements OnBannerListener {
 
     private Banner banner;
     private ArrayList bannerLists;

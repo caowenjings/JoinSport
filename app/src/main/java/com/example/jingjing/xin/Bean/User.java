@@ -1,12 +1,13 @@
 package com.example.jingjing.xin.Bean;
 
 
+import java.io.Serializable;
 
 /**
  * Created by jingjing on 2018/5/7.
  */
 
-public class User {
+public class User implements Serializable {
     private int userId;
     private String username;
     private String password;
@@ -14,6 +15,15 @@ public class User {
     private String sex;
     private String tel;
     private String myright;
+
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
 
     public int getUserId() {
         return userId;
@@ -37,14 +47,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRealname() {
-        return realname;
-    }
-
-    public void setRealname(String realname) {
-        this.realname = realname;
     }
 
     public String getSex() {

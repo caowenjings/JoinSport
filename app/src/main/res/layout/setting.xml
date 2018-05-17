@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/title_top"></include>
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/forgive_biankuang">
+        <TextView
+            android:layout_weight="5"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textColor="@color/colorblack"
+            android:textSize="20dp"
+            android:text="修改密码"/>
+        <ImageView
+            android:id="@+id/update_password"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_right"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/forgive_biankuang">
+        <TextView
+            android:layout_weight="5"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textColor="@color/colorblack"
+            android:textSize="20dp"
+            android:text="关于Join"/>
+        <ImageView
+            android:id="@+id/about_join"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_right"/>
+    </LinearLayout>
+
+</LinearLayout>

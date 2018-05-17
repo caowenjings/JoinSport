@@ -4,8 +4,6 @@
     package="com.example.jingjing.xin">
 
 
-
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -27,7 +25,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="0ghSE8hxUYZ15KVlDVYnDNTBNiGtCfF2" />
 
+        <activity android:name=".User.About_join"></activity>
+        <activity android:name=".User.Updatepassword"></activity>
+        <activity android:name=".User.SettingActivity"></activity>
+        <activity android:name=".User.UserInformationActivity"></activity>
+        <activity android:name=".User.Updateinformation"></activity>
         <activity android:name=".Activity.LoginActivity"></activity>
         <activity android:name=".Activity.RegisterActivity"></activity>
         <activity android:name=".Activity.MainActivity"></activity>
