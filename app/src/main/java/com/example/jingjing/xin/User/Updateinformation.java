@@ -3,6 +3,8 @@ package com.example.jingjing.xin.User;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -19,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jingjing.xin.Activity.LoginActivity;
+import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Activity.RegisterActivity;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
@@ -207,7 +211,7 @@ public class Updateinformation extends AppCompatActivity {
                     String loginresults = results.getString("result");
                     System.out.println(22);
                     System.out.println(loginresults);
-                    User user = new User();
+                    final User user = new User();
                     if(loginresults.equals("1")){
                         user.setUserId(results.getInt("userId"));
                         user.setUsername(results.getString("username"));
@@ -218,6 +222,20 @@ public class Updateinformation extends AppCompatActivity {
                         user.setMyright(results.getString("myRight"));
 
                         Toast.makeText(Updateinformation.this,"修改成功",Toast.LENGTH_LONG).show();
+                        new Handler(new Handler.Callback() {
+                            //处理接收到的消息的方法，防止堵塞主线程
+                            @Override
+                            public boolean handleMessage(Message arg0) {
+                                //实现页面跳转
+                                Intent intent=new Intent(Updateinformation.this, UserInformationActivity.class);
+                                Bundle mBundle = new Bundle();
+                                mBundle.putSerializable("user",user);
+                                intent.putExtras(mBundle);
+                                startActivity(intent);
+                                finish();
+                                return false;
+                            }
+                        }).sendEmptyMessageDelayed(0, 2000);
 
                     }else {
                         Toast.makeText(Updateinformation.this,"用户名已经有人注册了",Toast.LENGTH_LONG).show();

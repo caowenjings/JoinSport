@@ -1,14 +1,19 @@
 package com.example.jingjing.xin.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jingjing.xin.Activity.LoginActivity;
+import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
@@ -202,11 +207,33 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent5);
                 break;
             case R.id.btn_exit:
+                Exit();
                 break;
             default:
                 break;
-
         }
+    }
 
+    private void Exit(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        builder.setTitle("提示");//设置标题
+        builder.setMessage("退出当前可能会使你看不到重要的消息，确定退出？");//设置内容
+        builder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+        builder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.dismiss();//关闭对话框
+            }
+        });
+        AlertDialog dialog=builder.create();//获取dialog
+        dialog.show();//显示对话框
     }
 }

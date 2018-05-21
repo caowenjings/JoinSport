@@ -11,9 +11,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
+import com.example.jingjing.xin.User.ForgivePassword;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,11 +54,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_login;
     private String username,password;
     private CheckBox remember_pwd;
+    private TextView btn_forgive;
+    private User user;
 
-    private View inflate;//用于忘记密码
-    private TextView tv_find_password;
-    private TextView tv_cancel;
-    private Dialog dialog;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -79,13 +81,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_password = (EditText) findViewById(R.id.et_password);
         btn_register = (TextView) findViewById(R.id.btn_register);
         btn_login = (Button) findViewById(R.id.btn_login);
-        btn_forgetpwd=(TextView)findViewById(R.id. btn_forgetpwd);
+        btn_forgetpwd=(TextView)findViewById(R.id.btn_forgive);
         remember_pwd=(CheckBox)findViewById(R.id.remember_pwd);
+        btn_forgive = (TextView) findViewById(R.id.btn_forgive);
+
     }
 
     private void initData() {
         btn_login.setOnClickListener(this);
         btn_register.setOnClickListener(this);
+        btn_forgive.setOnClickListener(this);
     }
     public void getEditString(){
         username=et_username.getText().toString();
@@ -106,6 +111,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_register:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.btn_forgive:
+                showDialog();
+                break;
+            default:
                 break;
 
         }
@@ -192,5 +202,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+    private void showDialog() {//忘记密码
+        user = (User) getIntent().getSerializableExtra("user");
 
+        AlertDialog mDialog = new AlertDialog.Builder(this).create();
+        mDialog.show();
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.popupAnimation);
+
+        View view = View.inflate(this, R.layout.forgive_password, null);
+        final TextView find_password = (TextView) view.findViewById(R.id.tv_find_password);
+        final TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
+
+        find_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = new Intent(LoginActivity.this, ForgivePassword.class);
+                 Bundle bundle = new Bundle();
+                bundle.putSerializable("user",user);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               finish();
+            }
+        });
+
+        window.setContentView(view);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);//设置横向全屏
+
+        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.setCancelable(true);
+    }
 }

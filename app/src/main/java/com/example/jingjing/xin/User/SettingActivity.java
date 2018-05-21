@@ -79,7 +79,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         tv_back.setOnClickListener(this);
         update_password.setOnClickListener(this);
 
-
     }
 
 

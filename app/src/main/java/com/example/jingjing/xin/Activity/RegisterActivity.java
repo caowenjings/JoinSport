@@ -76,7 +76,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         android.support.v7.app.ActionBar actionBar =getSupportActionBar();
         actionBar.hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.register);
         initView();
         initData();
@@ -181,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {//执行耗时操作，带参get请求（Params是传入的参数）
+        protected String doInBackground(String... params) {//执行耗时操作，带参post请求（Params是传入的参数）
             Response response = null;
             String results = null;
              user = new User();

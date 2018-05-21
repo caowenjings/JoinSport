@@ -3,7 +3,7 @@
     android:id="@+id/tv_back"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorblue">
         <ImageView
             android:id="@+id/iv_title"
             android:layout_width="wrap_content"

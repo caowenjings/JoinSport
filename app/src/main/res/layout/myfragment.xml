@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@color/colorPrimary"
+        android:background="@color/colorblue"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="70dp">
             <ImageView
                 android:id="@+id/img_userhead"
                 android:layout_gravity="center"
-                android:layout_width="80dp"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/myfragment_head"
                 android:layout_marginLeft="10dp"/>
@@ -25,11 +25,11 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorwhite"
                 android:text="222"
-                android:textSize="25dp"/>
+                android:textSize="30dp"/>
 
         <ImageView
             android:id="@+id/btn_informatoin"
-            android:src="@drawable/back_right"
+            android:src="@drawable/back_right_white"
             android:layout_gravity="center_vertical"
             android:layout_width="40dp"
             android:layout_height="30dp" />
@@ -43,25 +43,26 @@
 
         <LinearLayout
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/btn_order"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/myfragment_user_order"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"  />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"  />
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:textSize="15sp"
-                    android:layout_width="280dp"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="预约管理" />
@@ -75,13 +76,13 @@
                 android:id="@+id/btn_need"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/myfragment_user_need"
-                    android:layout_width="35dp"
-                    android:layout_height="40dp" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"  />
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:textSize="15sp"
@@ -99,13 +100,13 @@
                 android:id="@+id/btn_joinedneed"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/myfragment_user_myneed"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"  />
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:textSize="15sp"
@@ -123,13 +124,13 @@
                 android:id="@+id/btn_collect"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/myfragment_user_collection"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:textSize="15sp"
@@ -148,13 +149,13 @@
                 android:id="@+id/btn_setting"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/myfragment_setting"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:textSize="15sp"
@@ -173,13 +174,13 @@
                 android:id="@+id/btn_exit"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:src="@drawable/myfragment_user_exit"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:textSize="15sp"

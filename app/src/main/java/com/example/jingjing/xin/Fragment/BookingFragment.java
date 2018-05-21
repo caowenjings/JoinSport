@@ -1,40 +1,62 @@
 package com.example.jingjing.xin.Fragment;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
-import com.alex.widget.banner.tips.TipsBanner;
-import com.alex.widget.banner.tips.listener.OnBottomTipsClickListener;
-import com.alex.widget.banner.tips.listener.OnTopTipsClickListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.example.jingjing.xin.Adapter.GridViewAdapter;
 import com.example.jingjing.xin.Adapter.MyPagerAdapter;
+import com.example.jingjing.xin.Adapter.StadiumAdapter;
 import com.example.jingjing.xin.Banner.MyLoader;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.AppGrid;
+import com.example.jingjing.xin.Bean.Notice;
+import com.example.jingjing.xin.Bean.Stadium;
+import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
+import com.example.jingjing.xin.Stadium.SearchStadium;
+import com.example.jingjing.xin.Stadium.SerachSelectDialog;
+import com.example.jingjing.xin.Stadium.StadiumActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static android.content.ContentValues.TAG;
-import static java.security.AccessController.getContext;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static com.example.jingjing.xin.constant.Conatant.URL_LOADINGORDER;
+import static com.example.jingjing.xin.constant.Conatant.URL_NOTICE;
+import static com.example.jingjing.xin.constant.Conatant.URL_PICTURE;
 
 /**
  * Created by jingjing on 2018/4/24.
@@ -52,30 +74,109 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
     private int pageCount;//总的页数
     private int pageSize = 8;//每一页显示的个数
     private int curIndex = 0;//当前显示的是第几页
-    private  String[] iconname = {"篮球","网球","游泳","击剑","足球","健身","高尔夫球","羽毛球","羽毛球"};
+    private GridView gridView;
 
+    private  String[] iconname = {"篮球","网球","游泳","击剑","足球","健身","高尔夫球","羽毛球","羽毛球"};
     private  int[] icon = {R.drawable.grid_basketball,R.drawable.grid_fencing, R.drawable.grid_swim,
             R.drawable.grid_fencing,R.drawable.grid_soccer, R.drawable.grid_bodybuilding,
             R.drawable.grid_golf,R.drawable.grid_tennis,R.drawable.grid_tennis};
 
-    private TipsBanner tipsBanner;
-    private List<String> tipsList;
-    private  String[] news = {"最新篮球比赛6月开始！","今天停水泳泳馆不开门","系统更新请等待","詹姆斯今天绝杀！","蓝区健身馆今天开张半价！"};
+    private ViewFlipper flipper;//公告
+    private List<Notice> testList;
+    private int count;
+    private TextView tv_city;//城市选择
+    private ImageView iv_city;
+    private LinearLayout btn_searchstadium;
+    private List<String> mCity;
+    private SwipeRefreshLayout swipeRefreshLayout;//刷新
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;//用于指定布局方式
+    private User user;
+
+   private LocationClient mLocationClient;
+
+    public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+
     @Override
     protected View initView() {
         View view = View.inflate(mContext, R.layout.bookingfrgment, null);
         banner = (Banner) view.findViewById(R.id.banner);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         mDots = (LinearLayout) view.findViewById(R.id.dots);
-        tipsBanner= (TipsBanner)view.findViewById(R.id.tipsbanner);
+        flipper = (ViewFlipper) view. findViewById(R.id.flipper);
+        tv_city = (TextView)view.findViewById(R.id.tv_city);
+        iv_city = (ImageView)view.findViewById(R.id.iv_city);
+        btn_searchstadium = (LinearLayout)view.findViewById(R.id.tv_search);
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.sr_booking);
+        recyclerView = (RecyclerView)view.findViewById(R.id.rv_stadium);
+        linearLayoutManager=new LinearLayoutManager(mContext);
+        gridView = (GridView)view.findViewById(R.id.gridview);
         return view;
     }
 
     @Override
     protected void initData() {
+        user = (User) getActivity().getIntent().getSerializableExtra("user");
         setBanner();//轮播图
         setGridview();//添加GridView
-        setgonggao();//公告
+        LoadingGongGao();//下载公告
+    //    requestLocation();//定位
+    //   mLocationClient = new LocationClient(getContext());
+     //  mLocationClient.registerLocationListener(new MyLocationListener());
+
+
+        tv_city.setOnClickListener(new View.OnClickListener() {//选择城市
+            @Override
+            public void onClick(View v) {
+                doSelect(v);
+
+            }
+        });
+        iv_city.setOnClickListener(new View.OnClickListener() {//选择城市按钮
+            @Override
+            public void onClick(View v) {
+                doSelect(v);
+            }
+        });
+
+        mCity = new ArrayList();
+        String[] citys = {"武汉", "北京", "上海", "深圳", "兰州", "成都", "天津"};
+        int i = 0;
+        while (i < citys.length) {
+            this.mCity.add(citys[i] + "市");
+            i += 1;
+        }
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorYellow);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Loading(tv_city.getText().toString());
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        btn_searchstadium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext,SearchStadium.class);
+                 Bundle mBundle = new Bundle();
+                 mBundle.putSerializable("user",user);
+                 mBundle.putSerializable("city",tv_city.getText().toString());
+                 intent.putExtras(mBundle);
+                startActivity(intent);
+            }
+        });
+/*
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), SearchStadium.class);
+                startActivity(intent);
+            }
+        });
+
+*/
     }
 
     //banner设置轮播图
@@ -136,8 +237,8 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
         }
     }
 
-    public void setDots() {
 
+    public void setDots() {
         for (int i = 0; i < pageCount; i++) {
             mDots.addView(inflater.inflate(R.layout.dots, null));//加载布局
         }
@@ -151,12 +252,11 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
                         .findViewById(R.id.v_dot)
                         .setBackgroundResource(R.drawable.unselecet);
 
-                mDots .getChildAt(position) // 圆点选中
+                mDots.getChildAt(position) // 圆点选中
                         .findViewById(R.id.v_dot)
                         .setBackgroundResource(R.drawable.selecet);
                 curIndex = position;
             }
-
 
             public void onPageScrolled(int arg0, float arg1, int arg2) {
             }
@@ -167,29 +267,237 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
     }
 
 
-    public void setgonggao(){
-        tipsList = new ArrayList<String>();
-        for (int i=0;i<news.length;i++) {
-            tipsList.add(news[i]);
-        }
-        tipsBanner.setTipsList(tipsList);
-        tipsBanner.start();
+    private void LoadingGongGao(){//装载公告
+        String gonggaoUrl = URL_NOTICE;
+        new GongGaoAsyncTask().execute(gonggaoUrl);
 
-
-
-        tipsBanner.setOnTopTipsClickListener(new OnTopTipsClickListener() {
-            @Override
-            public void OnTopTipsClick(int position) {
-                Log.d(TAG,  "点击" + position);
-            }
-        });
-
-        tipsBanner.setOnBottomTipsClickListener(new OnBottomTipsClickListener() {
-            @Override
-            public void OnBottomTipsClick(int position) {
-                Log.d(TAG,  "点击" + position);
-            }
-        });
     }
-}
 
+    private class GongGaoAsyncTask extends AsyncTask<String, Integer, String> {
+        public GongGaoAsyncTask() {
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Response response = null;
+            String results = null;
+            JSONObject json = new JSONObject();
+            try {
+                json.put("gonggao", 1);
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                Request request = new Request.Builder()
+                        .url(params[0])
+                        .post(requestBody)
+                        .build();
+                response = okHttpClient.newCall(request).execute();
+                results = response.body().string();
+                //判断请求是否成功
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            System.out.println("返回的数据：" + s);
+            List<Notice> testList = new ArrayList<>();
+            if (!TextUtils.isEmpty(s)) {
+                try {
+                    final JSONArray results = new JSONArray(s);
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject js = results.getJSONObject(i);
+                        Notice notice = new Notice();
+                        notice.setContent(js.getString("content"));
+                        notice.setTime(js.getString("time"));
+                        testList.add(notice);
+                        count = testList.size();
+
+                        final View content = View.inflate(getContext(), R.layout.gonggaolan, null);
+                        TextView tv_gonggao = (TextView) content.findViewById(R.id.tv_gonggao);
+                        ImageView iv_cancel = (ImageView) content.findViewById(R.id.iv_cancel);
+                        tv_gonggao.setText(testList.get(i).getContent());
+                        iv_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //对当前显示的视图进行移除
+                                flipper.removeView(content);
+                                count--;
+                                //当删除后仅剩 一条 新闻时，则取消滚动
+                                if (count == 1) {
+                                    flipper.stopFlipping();
+                                }
+                            }
+                        });
+                      flipper.addView(content);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("结果为空");
+                Toast.makeText(getContext(), "目前没有公告", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+
+
+    private void Loading(String tv_city) {//搜索城市
+        String loadingUrl = URL_LOADINGORDER;
+        new LoadingAsyncTask().execute(loadingUrl,tv_city);
+    }
+
+    private class LoadingAsyncTask extends AsyncTask<String, Integer, String> {
+        public LoadingAsyncTask() {
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Response response = null;
+            String results = null;
+            JSONObject json=new JSONObject();
+            try {
+                json.put("city",params[1]);
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                Request request = new Request.Builder()
+                        .url(params[0])
+                        .post(requestBody)
+                        .build();
+                response=okHttpClient.newCall(request).execute();
+                results=response.body().string();
+                //判断请求是否成功
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            System.out.println("返回的数据："+s);
+            List<Stadium> mData = new ArrayList<>();
+            if (!"null".equals(s)){
+                try {
+                    JSONArray results = new JSONArray(s);
+                    for(int i=0;i<results.length();i++){
+                        JSONObject js= results.getJSONObject(i);
+                        Stadium stadium = new Stadium();
+                        stadium.setStadiumId(js.getInt("stadiumId"));
+                        stadium.setStadiumname(js.getString("stadiumname"));
+                        stadium.setStadiumtype(js.getString("stadiumtypeId"));
+                        stadium.setArea(js.getString("area"));
+                        stadium.setIndoor(js.getInt("indoor"));
+                        stadium.setAircondition(js.getInt("aircondition"));
+                        stadium.setCity(js.getString("city"));
+                        stadium.setMainpicture(URL_PICTURE+js.getString("mainpicture"));
+                        stadium.setAdress(js.getString("adress"));
+                        stadium.setNum(js.getString("num"));
+                        stadium.setOpentime(js.getString("opentime"));
+                        mData.add(stadium);
+                    }
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL));
+                    StadiumAdapter adapter = new StadiumAdapter(mContext,mData,user);
+                    recyclerView.setNestedScrollingEnabled(false);
+                    recyclerView.setAdapter(adapter);//适配器
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                System.out.println("结果为空");
+                List<Stadium> mData2 = new ArrayList<>();
+                recyclerView.setLayoutManager(linearLayoutManager);//指定布局方式
+                recyclerView.addItemDecoration(new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL));
+                StadiumAdapter adapter = new StadiumAdapter(mContext,mData2,user);
+                recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setAdapter(adapter);
+                Toast.makeText(mContext,"该城市上没有体育场所加入",Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+    public void doSelect(View view){//搜索列表选项
+        SerachSelectDialog.Builder alert = new SerachSelectDialog.Builder(mContext);
+        alert.setListData(mCity);
+        alert.setTitle("请选择城市");
+        alert.setSelectedListiner(new SerachSelectDialog.Builder.OnSelectedListiner() {
+            @Override
+            public void onSelected(String info) {
+                tv_city.setText(info);//显示选择的城市
+                swipeRefreshLayout.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);//更新
+                        Loading(tv_city.getText().toString());
+                        swipeRefreshLayout.setRefreshing(true);
+
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+
+            }
+        });
+        SerachSelectDialog mDialog = alert.show();
+        //设置Dialog 尺寸
+        mDialog.setDialogWindowAttr(0.9,0.9,getActivity());
+    }
+
+/*
+    private void requestLocation(){//定位
+        initLocation();
+     mLocationClient.start();
+
+ }
+
+   private void initLocation(){
+       LocationClientOption option = new LocationClientOption();
+       option.setIsNeedAddress(true);
+       option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+       option.setScanSpan(5000);//设置更新的间隔,5秒更新一下当前的位置
+       mLocationClient.setLocOption(option);
+   }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLocationClient.stop();//停止定位
+    }
+
+    private class MyLocationListener implements BDLocationListener
+    {
+        private MyLocationListener() {}
+
+        public void onReceiveLocation(final BDLocation BDLocation)
+        {
+
+            getActivity().runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    System.out.println("12" + BDLocation.getCity());
+                    if (BDLocation.getCity().equals("")) {
+                        tv_city.setText("城市名");
+                    }
+                    for (;;)
+                    {
+                        tv_city.setText(BDLocation.getCity());
+                        Loading(tv_city.getText().toString());
+                        mLocationClient.stop();
+
+                        return;
+                    }
+                }
+            });
+        }
+    }*/
+
+}

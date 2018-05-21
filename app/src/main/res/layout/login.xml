@@ -134,7 +134,7 @@
             android:textSize="15dp"
             android:textColor="@color/text_colcor" />
         <TextView
-            android:id="@+id/btn_forgetpwd"
+            android:id="@+id/btn_forgive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00000000"

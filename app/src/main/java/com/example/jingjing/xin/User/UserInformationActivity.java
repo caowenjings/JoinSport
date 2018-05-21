@@ -42,7 +42,6 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
     private User user;
     private ImageView icon_back;
     private ImageView btn_update;
-    private Button btn_password;
     private String userId;
 
 
@@ -77,7 +76,6 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
         tv_back=(ImageView)findViewById(R.id.tv_back);
 
         btn_update = (ImageView) findViewById(R.id.update_information);
-        btn_password = (Button) findViewById(R.id.update_password);
         getWindow().setStatusBarColor(Color.parseColor("#FF029ACC"));
 
 
@@ -96,8 +94,6 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
         });
 
         btn_update.setOnClickListener(this);
-        btn_password.setOnClickListener(this);
-
 
     }
 
@@ -180,15 +176,8 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
                 intent.putExtras(mBundle);
                 startActivity(intent);
                 break;
-            case R.id.update_password:
-                Intent intent1 = new Intent(UserInformationActivity.this, Updatepassword.class);
-                Bundle mBundle1 = new Bundle();
-                mBundle1.putSerializable("user", user);
-                intent1.putExtras(mBundle1);
-                startActivity(intent1);
-                break;
-
-
+           default:
+               break;
         }
     }
 }

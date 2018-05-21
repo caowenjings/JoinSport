@@ -1,11 +1,16 @@
 package com.example.jingjing.xin.Activity;
 
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -32,22 +37,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        final ActionBar actionBar  = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         setContentView(R.layout.activity_main);
-        viewPager=(ViewPager)findViewById(R.id.view_fragment);
-        bottomNavigationBar=(BottomNavigationBar) findViewById(R.id.bottomnavigation);
-        linearLayout=(LinearLayout)findViewById(R.id.fragment);
-        //添加碎片
-        List<Fragment >fragmentLists=new ArrayList<>();
-        fragmentLists.add(new BookingFragment());
-        fragmentLists.add(new FindFragment());
-        fragmentLists.add(new MyFragment());
-        //关联适配器
-        FragmentAdapter fragmentAdapter =new FragmentAdapter(getSupportFragmentManager(),fragmentLists);
-        viewPager.setAdapter(fragmentAdapter);
-        viewPager.setOffscreenPageLimit(2);
-        setBottomNavigationItem(bottomNavigationBar,6,60,50);
-        setdefaultFragment();
-    }
+            viewPager = (ViewPager) findViewById(R.id.view_fragment);
+            bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottomnavigation);
+            linearLayout = (LinearLayout) findViewById(R.id.fragment);
+            //添加碎片
+            List<Fragment> fragmentLists = new ArrayList<>();
+            fragmentLists.add(new BookingFragment());
+            fragmentLists.add(new FindFragment());
+            fragmentLists.add(new MyFragment());
+            //关联适配器
+            FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragmentLists);
+            viewPager.setAdapter(fragmentAdapter);
+            viewPager.setOffscreenPageLimit(2);
+            setBottomNavigationItem(bottomNavigationBar, 6, 60, 50);
+            setdefaultFragment();
+
+        }
+
     //默认
     public void setdefaultFragment(){
         FragmentManager fm=getSupportFragmentManager();

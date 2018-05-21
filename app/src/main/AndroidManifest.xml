@@ -4,19 +4,21 @@
     package="com.example.jingjing.xin">
 
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />//进行网络定位
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />//GPS定位
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />//访问网络信息，WiFi信息用于进行网络定位
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />//获取运营商信息，用于提供运营商相关的接口
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />//
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />//用于读取手机当前的状态
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />//写入扩展存储，向扩展写入数据，用于离线定位数据
+    <uses-permission android:name="android.permission.INTERNET" />//访问网络
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-
 
     <application
         android:allowBackup="true"
@@ -25,10 +27,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        //用于百度定位
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="0ghSE8hxUYZ15KVlDVYnDNTBNiGtCfF2" />
+            android:value="iIcEspGi02SGFOp47XW9Ov7FhOTaTkxq" />
 
+        <activity android:name=".Stadium.SearchStadium"></activity>
+        <activity android:name=".Stadium.StadiumActivity"></activity>
+        <activity android:name=".User.ForgivePassword"></activity>
         <activity android:name=".User.About_join"></activity>
         <activity android:name=".User.Updatepassword"></activity>
         <activity android:name=".User.SettingActivity"></activity>
@@ -37,6 +43,11 @@
         <activity android:name=".Activity.LoginActivity"></activity>
         <activity android:name=".Activity.RegisterActivity"></activity>
         <activity android:name=".Activity.MainActivity"></activity>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
 
         <activity android:name=".Activity.WelcomeActivity">
             <intent-filter>

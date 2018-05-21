@@ -15,11 +15,87 @@
        app:indicator_drawable_unselected="@color/colorwhite"
        app:indicator_drawable_selected="@color/colorblue">
    </com.youth.banner.Banner>
-   <!--Gridview-->
-   <GridView
-       android:id="@+id/grid_find"
+
+   <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="60dp"
-       android:numColumns="3"></GridView>
+       android:layout_height="wrap_content">
+
+      <LinearLayout
+          android:layout_weight="1"
+          android:orientation="vertical"
+          android:layout_marginTop="10dp"
+          android:layout_marginLeft="50dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+
+      <ImageView
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:src="@drawable/findfragment_information"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="消息"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_weight="1"
+          android:orientation="vertical"
+          android:layout_marginTop="10dp"
+          android:layout_marginLeft="20dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+      <ImageView
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:src="@drawable/findfragment_frinend"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="运动圈"/>
+      </LinearLayout>
+
+
+       <LinearLayout
+           android:layout_weight="1"
+           android:orientation="vertical"
+           android:layout_marginTop="10dp"
+           android:layout_marginLeft="20dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+      <ImageView
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:src="@drawable/findfragment_win"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="约运动"/>
+       </LinearLayout>
+   </LinearLayout>
+
+   <LinearLayout
+       android:layout_marginLeft="10dp"
+       android:layout_marginTop="5dp"
+       android:layout_width="match_parent"
+       android:layout_height="30dp"
+       android:background="@color/color_qianYellow">
+
+      <View
+          android:layout_width="5dp"
+          android:layout_height="30dp"
+          android:background="@color/colorPrimary"></View>
+
+      <TextView
+          android:layout_gravity="center_vertical"
+          android:layout_marginLeft="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="精选动态"
+          android:textSize="15dp" />
+   </LinearLayout>
 
 </LinearLayout>
