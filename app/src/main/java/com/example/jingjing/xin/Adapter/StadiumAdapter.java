@@ -14,11 +14,11 @@ import com.example.jingjing.xin.Bean.Stadium;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.StadiumActivity;
+import com.example.jingjing.xin.Stadium.StadiumInformation;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.youth.banner.loader.ImageLoader;
 
 import java.util.List;
 
@@ -53,7 +53,6 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
         mStadiumlist = stadiumList;
         mUser = user;
     }
-
     @Override
     public StadiumAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {//加载布局，创建实例
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookingfragment_list_stadium, parent, false);
@@ -62,8 +61,8 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Stadium stadium = mStadiumlist.get(position);
-                Intent intent = new Intent(mContext, StadiumActivity.class);
+                Stadium stadium = mStadiumlist.get(position);//通过position拿到stadium实例
+                Intent intent = new Intent(mContext,StadiumActivity.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putSerializable("user", mUser);
                 mBundle.putSerializable("stadium", stadium);
@@ -73,7 +72,6 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
         });
         return holder;
     }
-
     @Override
     public void onBindViewHolder(StadiumAdapter.ViewHolder holder, int position) {//绑定数据
         Stadium stadium = mStadiumlist.get(position);//获取当前位置

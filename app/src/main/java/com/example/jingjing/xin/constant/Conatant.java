@@ -5,7 +5,7 @@ package com.example.jingjing.xin.constant;
  */
 
 public class Conatant {
-    public static String URL = "http://10.0.2.2:8080/"; //手机热点IP地址
+    public static String URL = "http://10.0.2.2:8080/"; //手机热点IP地址(8080是端口号)
     public static String URL_LOGIN  = URL+"Login_Servlet";
     public static String URL_Register = URL+"Register_Servlet";
     public static String URL_UpdateUser = URL+"UpdateUser_Servlet";

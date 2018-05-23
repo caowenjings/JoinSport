@@ -27,8 +27,8 @@
     <!-- 星星的样式 -->
     <style name="bookingRatingBar" parent="@android:style/Widget.ActionBar">
         <item name="android:progressDrawable">@drawable/ratingstars</item>//默认图片
-        <item name="android:minHeight">32dp</item>
-        <item name="android:maxHeight">32dp</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
     </style>
 
     <!-- Dialog 主界面城市搜索框样式 -->
@@ -36,5 +36,14 @@
         <item name="android:windowNoTitle">true</item>//无标题
         <item name="android:windowBackground">@color/transparent</item>
     </style>
+
+    <!-- stadium里面的 -->
+    <style name="stadiuminformation">
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 
 </resources>

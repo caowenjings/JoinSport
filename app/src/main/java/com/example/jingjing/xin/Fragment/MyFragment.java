@@ -17,6 +17,8 @@ import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
+import com.example.jingjing.xin.Stadium.StadiumCollection;
+import com.example.jingjing.xin.Stadium.StadiumInformation;
 import com.example.jingjing.xin.User.SettingActivity;
 import com.example.jingjing.xin.User.UserInformationActivity;
 
@@ -169,7 +171,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
-            /*
+
             case R.id.btn_order:
                 Intent intent1 = new Intent(getContext(), UserInformationActivity.class);
                 Bundle bundle1 = new Bundle();
@@ -185,7 +187,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent2);
                 break;
             case R.id.btn_collect:
-                Intent intent3 = new Intent(getContext(), UserInformationActivity.class);
+                Intent intent3 = new Intent(getContext(), StadiumCollection.class);
                 Bundle bundle3 = new Bundle();
                 bundle3.putSerializable("user",user);
                 intent3.putExtras(bundle3);
@@ -198,7 +200,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 intent4.putExtras(bundle4);
                 startActivity(intent4);
                 break;
-                */
+
             case R.id.btn_setting:
                 Intent intent5 = new Intent(getContext(), SettingActivity.class);
                 Bundle bundle5 = new Bundle();

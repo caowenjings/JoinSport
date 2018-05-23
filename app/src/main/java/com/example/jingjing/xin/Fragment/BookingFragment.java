@@ -36,6 +36,9 @@ import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.SearchStadium;
 import com.example.jingjing.xin.Stadium.SerachSelectDialog;
 import com.example.jingjing.xin.Stadium.StadiumActivity;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -93,7 +96,7 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
     private LinearLayoutManager linearLayoutManager;//用于指定布局方式
     private User user;
 
-   private LocationClient mLocationClient;
+    private LocationClient mLocationClient;
 
     public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
 
@@ -167,16 +170,6 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
                 startActivity(intent);
             }
         });
-/*
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), SearchStadium.class);
-                startActivity(intent);
-            }
-        });
-
-*/
     }
 
     //banner设置轮播图
@@ -400,7 +393,7 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener {
                         stadium.setMainpicture(URL_PICTURE+js.getString("mainpicture"));
                         stadium.setAdress(js.getString("adress"));
                         stadium.setNum(js.getString("num"));
-                        stadium.setOpentime(js.getString("opentime"));
+//                        stadium.setOpentime(js.getString("opentime"));
                         mData.add(stadium);
                     }
                     recyclerView.setLayoutManager(linearLayoutManager);

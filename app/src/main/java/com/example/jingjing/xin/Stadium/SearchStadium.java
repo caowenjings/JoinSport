@@ -31,7 +31,7 @@ public class SearchStadium extends AppCompatActivity {
 
     }
     private void initView(){
-        btn_back = (TextView)findViewById(R.id.btn_back);
+//        btn_back = (TextView)findViewById(R.id.btn_back);
 
     }
     private void  initDate(){

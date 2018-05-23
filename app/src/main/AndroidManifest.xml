@@ -32,8 +32,9 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="iIcEspGi02SGFOp47XW9Ov7FhOTaTkxq" />
 
-        <activity android:name=".Stadium.SearchStadium"></activity>
+        <activity android:name=".Stadium.StadiumCollection"></activity>
         <activity android:name=".Stadium.StadiumActivity"></activity>
+        <activity android:name=".Stadium.SearchStadium"></activity>
         <activity android:name=".User.ForgivePassword"></activity>
         <activity android:name=".User.About_join"></activity>
         <activity android:name=".User.Updatepassword"></activity>
