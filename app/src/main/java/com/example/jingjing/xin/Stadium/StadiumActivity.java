@@ -157,7 +157,7 @@ public class StadiumActivity extends AppCompatActivity {
         btn_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StadiumActivity.this, Updateinformation.class);
+                Intent intent = new Intent(StadiumActivity.this, StadiumOrder.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putSerializable("user", user);
                 mBundle.putSerializable("stadium", stadium);
@@ -173,13 +173,13 @@ public class StadiumActivity extends AppCompatActivity {
                 if (buttonView.isChecked()) {
                     if (firstcollect) {
                         collection(stadium.getStadiumId(), user.getUserId(), true);
-                        Toast.makeText(StadiumActivity.this, "收藏成功", Toast.LENGTH_LONG).show();
+                     //   Toast.makeText(StadiumActivity.this, "收藏成功", Toast.LENGTH_LONG).show();
                     } else {
                     }
                 } else {
                     if (deletecollect) {
                         collection(stadium.getStadiumId(), user.getUserId(), false);
-                        Toast.makeText(StadiumActivity.this, "取消收藏", Toast.LENGTH_LONG).show();
+                     //   Toast.makeText(StadiumActivity.this, "取消收藏", Toast.LENGTH_LONG).show();
                     } else {}
                 }
             }

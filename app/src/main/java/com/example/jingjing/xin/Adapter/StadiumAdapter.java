@@ -14,7 +14,6 @@ import com.example.jingjing.xin.Bean.Stadium;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.StadiumActivity;
-import com.example.jingjing.xin.Stadium.StadiumInformation;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;

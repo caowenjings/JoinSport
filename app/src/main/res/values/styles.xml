@@ -45,5 +45,38 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <!-- 选择场地 -->
+    <style name="stadiumorder_button">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorblue</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- 选择场地 -->
+    <style name="stadiumorder_text">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <!-- 选择场地Dialog的样式 -->
+    <style name="PlaceDialog" parent="Theme.AppCompat.DayNight.Dialog.MinWidth">
+        <item name="android:windowAnimationStyle">@style/PlaceDialogAnimation</item>
+    </style>
+
+    <style name="PlaceDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_out</item>
+    </style>
+
 
 </resources>
+
+
+

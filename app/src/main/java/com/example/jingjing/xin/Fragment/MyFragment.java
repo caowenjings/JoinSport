@@ -18,7 +18,6 @@ import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.StadiumCollection;
-import com.example.jingjing.xin.Stadium.StadiumInformation;
 import com.example.jingjing.xin.User.SettingActivity;
 import com.example.jingjing.xin.User.UserInformationActivity;
 
