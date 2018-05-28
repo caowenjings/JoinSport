@@ -4,11 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="40dp"
+      android:background="@color/colorblue">
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textColor="@color/colorwhite"
+         android:textSize="30dp"
+         android:layout_gravity="center_vertical"
+         android:gravity="center_horizontal"
+         android:text="发 现"/>
+  </LinearLayout>
+
+
    <!--轮播图banner-->
    <com.youth.banner.Banner
        android:id="@+id/baner_find"
        android:layout_width="match_parent"
-       android:layout_height="200dp"
+       android:layout_height="180dp"
        app:indicator_width="10dp"
        app:indicator_height="10dp"
        android:layout_margin="4dp"
@@ -16,42 +32,32 @@
        app:indicator_drawable_selected="@color/colorblue">
    </com.youth.banner.Banner>
 
+
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
 
       <LinearLayout
-          android:layout_weight="1"
-          android:orientation="vertical"
-          android:layout_marginTop="10dp"
-          android:layout_marginLeft="50dp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content">
-
+         style="@style/FindLinerloayout"
+          android:layout_marginLeft="40dp">
       <ImageView
           android:layout_width="32dp"
           android:layout_height="32dp"
           android:src="@drawable/findfragment_information"/>
-
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="消息"/>
-
       </LinearLayout>
 
+
       <LinearLayout
-          android:layout_weight="1"
-          android:orientation="vertical"
-          android:layout_marginTop="10dp"
-          android:layout_marginLeft="20dp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content">
+          style="@style/FindLinerloayout">
       <ImageView
+          android:layout_marginLeft="4dp"
           android:layout_width="32dp"
           android:layout_height="32dp"
           android:src="@drawable/findfragment_frinend"/>
-
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -60,13 +66,10 @@
 
 
        <LinearLayout
-           android:layout_weight="1"
-           android:orientation="vertical"
-           android:layout_marginTop="10dp"
-           android:layout_marginLeft="20dp"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
+           android:id="@+id/add_sport"
+           style="@style/FindLinerloayout">
       <ImageView
+          android:layout_marginLeft="4dp"
           android:layout_width="32dp"
           android:layout_height="32dp"
           android:src="@drawable/findfragment_win"/>
@@ -77,18 +80,18 @@
        </LinearLayout>
    </LinearLayout>
 
+
+
    <LinearLayout
        android:layout_marginLeft="10dp"
        android:layout_marginTop="5dp"
        android:layout_width="match_parent"
        android:layout_height="30dp"
        android:background="@color/color_qianYellow">
-
       <View
           android:layout_width="5dp"
           android:layout_height="30dp"
           android:background="@color/colorPrimary"></View>
-
       <TextView
           android:layout_gravity="center_vertical"
           android:layout_marginLeft="10dp"

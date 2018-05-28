@@ -169,6 +169,7 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener{
                  mBundle.putSerializable("city",tv_city.getText().toString());
                  intent.putExtras(mBundle);
                 startActivity(intent);
+
             }
         });
     }

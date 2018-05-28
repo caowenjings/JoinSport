@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,11 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jingjing.xin.Activity.LoginActivity;
-import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.StadiumCollection;
+import com.example.jingjing.xin.Stadium.StadiumOrderInformation;
 import com.example.jingjing.xin.User.SettingActivity;
 import com.example.jingjing.xin.User.UserInformationActivity;
 
@@ -170,9 +169,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
-
             case R.id.btn_order:
-                Intent intent1 = new Intent(getContext(), UserInformationActivity.class);
+                Intent intent1 = new Intent(getContext(),StadiumOrderInformation.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putSerializable("user",user);
                 intent1.putExtras(bundle1);

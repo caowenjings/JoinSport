@@ -147,9 +147,9 @@ public class StadiumOrder extends AppCompatActivity implements View.OnClickListe
                 gerEditString();
                 if(!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(time)&&!TextUtils.isEmpty(place)){
 
-                    String time =myear+ "年" + mmonth + "月" + mday + "日";
+                    String thistime =myear+ "年" + mmonth + "月" + mday + "日";
                     String time_order = date + time;
-                    OrderStadium(user.getUserId(),stadium.getStadiumId(),time,time_order,place,user.getTel());
+                    OrderStadium(user.getUserId(),stadium.getStadiumId(),thistime,time_order,place,user.getTel());
 
                 }else {
                     Toast.makeText(StadiumOrder.this, "您有未输入的内容", Toast.LENGTH_LONG).show();

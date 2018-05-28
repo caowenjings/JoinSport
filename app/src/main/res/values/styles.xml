@@ -75,7 +75,15 @@
         <item name="android:windowExitAnimation">@anim/dialog_out</item>
     </style>
 
-
+    <!-- findfragment里面的线性布局 -->
+    <style name="FindLinerloayout">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
 </resources>
 
 
