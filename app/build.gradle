@@ -40,9 +40,12 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.4.0'
     //用于异步图像加载，缓存和显示ImageLoader
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    //百度定位
-
     //悬浮按钮
-     compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
+    compile 'com.android.support:design:25.4.0'
+    //  compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'滚动
+    //图片圆形化
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
+
 
 }

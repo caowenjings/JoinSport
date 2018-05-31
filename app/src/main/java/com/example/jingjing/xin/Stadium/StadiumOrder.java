@@ -2,14 +2,11 @@ package com.example.jingjing.xin.Stadium;
 
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
-import android.icu.util.Calendar;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -25,7 +22,6 @@ import android.widget.Toast;
 import com.example.jingjing.xin.Bean.Stadium;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
-import com.example.jingjing.xin.User.SetPlaceDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

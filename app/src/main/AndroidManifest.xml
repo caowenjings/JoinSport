@@ -32,6 +32,8 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="iIcEspGi02SGFOp47XW9Ov7FhOTaTkxq" />
 
+
+        <activity android:name=".Find.PostNeedFalot"></activity>
         <activity android:name=".Find.PostNeed"></activity>
         <activity android:name=".Stadium.StadiumOrderInformation"></activity>
         <activity android:name=".Stadium.StadiumOrder"></activity>

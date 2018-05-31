@@ -1,34 +1,34 @@
-package com.example.jingjing.xin.Stadium;
+package com.example.jingjing.xin.Find;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jingjing.xin.Adapter.SetStadiumAdapter;
-import com.example.jingjing.xin.Adapter.StadiumAdapter;
 import com.example.jingjing.xin.Bean.Stadium;
-import com.example.jingjing.xin.Bean.User;
-import com.example.jingjing.xin.Find.SetStadiumDialog;
 import com.example.jingjing.xin.R;
 
 import org.json.JSONArray;
@@ -44,52 +44,71 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 import static com.example.jingjing.xin.constant.Conatant.URL_PICTURE;
 import static com.example.jingjing.xin.constant.Conatant.URL_SEARCHSTADIUM;
 
 /**
- * Created by jingjing on 2018/5/24.
+ * Created by jingjing on 2018/5/31.
  */
 
-public class SearchStadiumone extends AppCompatActivity {
-    /*
-       private SetStadiumDialog.SetStadiumListener setStadiumListener;
-    private NumberPicker numberPicker;
-    private LinearLayoutManager layoutManager;
+public class SetStadiumDialog extends DialogFragment {
+
+    // private List<String> place = new ArrayList<>();
+    //private ListView listView;
     private EditText et_search;
-    private ImageButton iv_delete;
+    private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
+    private SetStadiumListener setPlaceListener;
     private String city;
-    private Stadium stadium;
-    private Stadium set_stadium;
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private Stadium stadium_set;
+    public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().setCanceledOnTouchOutside(true);//点击Dialog外围可以消除Dialog
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, 100);//设置高宽
-        getDialog().setCanceledOnTouchOutside(false);
+        final Window window = getDialog().getWindow();
+        View view = View.inflate(getContext(), R.layout.list_changguan,null);
+        window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        window.setLayout(200,100);
+        et_search = (EditText) view.findViewById(R.id.et_search_text);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_search);
 
-        View view = View.inflate(getActivity(), R.layout.list_changguan, null);//布局
-        et_search=(EditText)view.findViewById(R.id.et_search);
-        iv_delete=(ImageButton)view.findViewById(R.id.iv_delete);
-        recyclerView=(RecyclerView)view.findViewById(R.id.recycler_view);
         return view;
+
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {//风格
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, R.style.PlaceDialog);
+        setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {//当acvitity中的oncreate返回后，回调用这里方法
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initStadium();
+//        city =(String)getActivity().getIntent().getSerializableExtra("city");
+        city = "成都市";
+        System.out.println(city);
+        Search("",city);
+        layoutManager = new LinearLayoutManager(getContext());
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    String stadiuname = et_search.getText().toString();
+                    System.out.println("11");
+                    Search(stadiuname,city);
+                    System.out.println("22");
+                    return false;
+                }
+                return false;
+            }
+        });
+
     }
 
     @NonNull
@@ -98,63 +117,32 @@ public class SearchStadiumone extends AppCompatActivity {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         return dialog;
     }
-
-
-    public interface SetStadiumListener {//设置接口
-
+    public interface SetStadiumListener{
         void onSetStadiumComplete(Stadium stadium);
     }
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            setStadiumListener = (SetStadiumDialog.SetStadiumListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString());
+        try{
+            setPlaceListener = (SetStadiumListener) context;
+        }catch (ClassCastException e){
+            //throw new ClassCastException(context.toString());
         }
     }
 
     @Override
     public void onDestroy() {
+        setPlaceListener.onSetStadiumComplete(stadium_set);
         super.onDestroy();
     }
 
-    public void  initStadium() {
-
-        iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_search.setText("");
-            }
-        });
-        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                if(actionId == EditorInfo.IME_ACTION_SEARCH){
-                    String stadiuname = et_search.getText().toString();
-                    if(stadiuname.length()==0){
-                        iv_delete.setVisibility(View.GONE);//如果输入框里面的内容为0,就隐藏
-                    }else {
-                        iv_delete.setVisibility(View.VISIBLE);
-                        //  Search(stadiuname,city);
-                        return false;
-                    }
-                }
-                return false;
-            }
-        });
-    }
-
-
-    private void SetStadium(String stadiuname,String city) {
+    private void Search(String stadiuname,String city) {
         String SearchUrl = URL_SEARCHSTADIUM;
-        new SetStadiumDialog.SetStadiumAsyncTask().execute(SearchUrl,stadiuname,city);
+        new SearchAsyncTask().execute(SearchUrl,stadiuname,city);
     }
-    private class SetStadiumAsyncTask extends AsyncTask<String, Integer, String> {
-        public SetStadiumAsyncTask () {
+    private class SearchAsyncTask extends AsyncTask<String, Integer, String> {
+        public SearchAsyncTask() {
         }
 
         @Override
@@ -205,6 +193,7 @@ public class SearchStadiumone extends AppCompatActivity {
                         mData.add(stadium);
                     }
                     List<Stadium> mData2 = new ArrayList<>();
+                    System.out.println("22");
                     for(int i=0;i<mData.size();i++){
                         Stadium stadium = new Stadium();
                         stadium.setMainpicture(mData.get(i).getMainpicture());
@@ -224,14 +213,15 @@ public class SearchStadiumone extends AppCompatActivity {
                     SetStadiumAdapter adapter = new SetStadiumAdapter(getContext(),mData2);
                     recyclerView.setNestedScrollingEnabled(false);
                     recyclerView.setAdapter(adapter);
-                    adapter.SetStadiumOnClickListener(new SetStadiumAdapter.SetStadiumOnClickListener() {
+                    adapter.setOnItemClickListener(new SetStadiumAdapter.OnRecyclerViewItemClickListener() {
                         @Override
-                        public void onItemClick(View itemView, int postition) {
-                            set_stadium= stadium;
+                        public void onItemClick(Stadium stadium) {
+                            stadium_set = stadium;
                             onDestroy();
                             onDismiss(getDialog());
                         }
                     });
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -247,92 +237,6 @@ public class SearchStadiumone extends AppCompatActivity {
 
             }
         }
-
-    }*/
+    }
 
 }
-/*
-    private Context context;
-    private List<Stadium> mstadiumList;
-    private User mUser;
-    private SetStadiumOnClickListener setStadiumOnClickListener;
-    private Stadium stadium;
-
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-
-        View setstadiumAdapter;
-        ImageView stadiumpicture;
-       // RatingBar ratingBar;
-        TextView stadiumname;
-        TextView stadiumtype;
-        TextView stadiumaddress;
-
-        public ViewHolder(View view) {
-            super(view);
-            setstadiumAdapter = view;
-
-            stadiumpicture = (ImageView)view.findViewById(R.id.iv_stadiumpicture);
-           // ratingBar = (RatingBar)view.findViewById(R.id.rb_ratbar);
-            stadiumname = (TextView)view.findViewById(R.id.tv_stadiumname);
-            stadiumtype = (TextView)view.findViewById(R.id.tv_stadiumtype);
-            stadiumaddress= (TextView)view.findViewById(R.id.tv_stadiumaddress);
-        }
-    }
-
-    public SetStadiumAdapter(Context context ,List<Stadium> stadiumList){
-        context = context;
-        mstadiumList = stadiumList;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_changguan,parent,false);
-        final ViewHolder holder = new ViewHolder(view);
-       holder.setstadiumAdapter.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(setStadiumOnClickListener != null){
-                   int postion = holder.getLayoutPosition();
-                   Stadium stadium = mstadiumList.get(postion);
-                   setStadiumOnClickListener.onItemClick(stadium);
-               }
-           }
-       });
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        stadium = mstadiumList.get(position);
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(context);
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        ImageLoader.getInstance().init(configuration);
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnFail(R.drawable.error) // 设置图片加载或解码过程中发生错误显示的图片
-                .showImageOnLoading(R.drawable.loading)
-                .resetViewBeforeLoading(false)  // default 设置图片在加载前是否重置、复位
-                .delayBeforeLoading(1000)  // 下载前的延迟时间
-                .build();
-        ImageLoader.getInstance().displayImage(stadium.getMainpicture(), holder.stadiumpicture,options);
-        holder.stadiumname.setText(stadium.getStadiumname());
-        holder.stadiumaddress.setText(stadium.getAdress());
-        holder.stadiumtype.setText(stadium.getStadiumtype());
-
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mstadiumList.size();
-    }
-
-
-    public interface SetStadiumOnClickListener{//1.定义点击事件的回调
-        void onItemClick(Stadium stadium);
-    }
-
-    public void SetStadiumOnClickListener(SetStadiumOnClickListener setStadiumOnClickListener){//2.定义一个方法
-        this.setStadiumOnClickListener=setStadiumOnClickListener;
-    }
-}*/

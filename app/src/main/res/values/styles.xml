@@ -84,6 +84,19 @@
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:orientation">vertical</item>
     </style>
+
+    <!--postneedfloat里面的textview -->
+
+<style name="PostneedTextview" >
+    <item name="android:layout_margin">10dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:textColor">@color/colorblack</item>
+    <item name="android:textSize">20dp</item>
+    <item name="android:layout_marginLeft">10dp</item>
+</style>
+
+
 </resources>
 
 

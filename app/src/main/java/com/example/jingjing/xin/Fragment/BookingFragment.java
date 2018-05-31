@@ -163,7 +163,7 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener{
         btn_searchstadium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext,SearchStadiumone.class);
+                Intent intent=new Intent(mContext,SearchStadium.class);
                  Bundle mBundle = new Bundle();
                  mBundle.putSerializable("user",user);
                  mBundle.putSerializable("city",tv_city.getText().toString());
@@ -229,56 +229,56 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener{
                     mBundle.putSerializable("city",tv_city.getText().toString());
                     switch (position){
                         case 0:
-                            Intent intent = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","篮球");
                             mBundle.putSerializable("user",user);
                             intent.putExtras(mBundle);
                             startActivity(intent);
                             break;
                         case 1:
-                            Intent intent1 = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent1 = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","高尔夫");
                             mBundle.putSerializable("user",user);
                             intent1.putExtras(mBundle);
                             startActivity( intent1);
                             break;
                         case 2:
-                            Intent intent2= new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent2= new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","足球");
                             mBundle.putSerializable("user",user);
                             intent2.putExtras(mBundle);
                             startActivity(intent2);
                             break;
                         case 3:
-                            Intent intent4 = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent4 = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","网球");
                             mBundle.putSerializable("user",user);
                             intent4.putExtras(mBundle);
                             startActivity(intent4);
                             break;
                         case 4:
-                            Intent intent5 = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent5 = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","游泳");
                             mBundle.putSerializable("user",user);
                             intent5.putExtras(mBundle);
                             startActivity(intent5);
                             break;
                         case 5:
-                            Intent intent6 = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent6 = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","羽毛球");
                             mBundle.putSerializable("user",user);
                             intent6.putExtras(mBundle);
                             startActivity(intent6);
                             break;
                         case 6:
-                            Intent intent7 = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent7 = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","健身");
                             mBundle.putSerializable("user",user);
                             intent7.putExtras(mBundle);
                             startActivity(intent7);
                             break;
                         case 7:
-                            Intent intent8 = new Intent(getActivity(),SearchStadiumone.class);
+                            Intent intent8 = new Intent(getActivity(),SearchStadium.class);
                             mBundle.putSerializable("type","射箭");
                             mBundle.putSerializable("user",user);
                             intent8.putExtras(mBundle);

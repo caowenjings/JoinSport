@@ -4,16 +4,23 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.location.LocationClient;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Banner.MyLoader;
@@ -48,36 +55,45 @@ import static com.example.jingjing.xin.constant.Conatant.URL_FINDINFORMATION;
  * Created by jingjing on 2018/4/24.
  */
 
-public class FindFragment extends BaseFragment implements OnBannerListener {
+public class FindFragment extends BaseFragment  implements OnBannerListener{
 
     private Banner find_banner;
     private ArrayList findlists;
     private LinearLayout add_sport;
+    private FloatingActionButton fab_add_sport;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefresh;
+    private TextView tv_nofind;
+    private ScrollView sv_find;
     private User user;
+    private String city;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.findfragment, container, false);
-        find_banner = (Banner) view.findViewById(R.id.baner_find);
-        setfindBanner();
-        return view;
-    }
-
     @Override
     protected View initView() {
+
         View view = View.inflate(mContext, R.layout.findfragment, null);
-
+        find_banner = (Banner) view.findViewById(R.id.baner_find);
         add_sport = (LinearLayout) view.findViewById(R.id.add_sport);
-
-        return view;
+        return  view;
     }
 
     @Override
     protected void initData() {
+        setfindBanner();//轮播图
 
+        user = (User) getActivity().getIntent().getSerializableExtra("user");
+
+        add_sport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getContext(), PostNeed.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -98,8 +114,23 @@ public class FindFragment extends BaseFragment implements OnBannerListener {
     }
     @Override
     public void OnBannerClick(int position) {
-
     }
-
-
 }
+
+
+ /*
+
+    @Override
+    protected View initView() {
+        View view = View.inflate(mContext, R.layout.findfragment, null);
+
+        add_sport = (LinearLayout) view.findViewById(R.id.add_sport);
+        recyclerView = (RecyclerView)view.findViewById(R.id.rv_find);
+        layoutManager = new LinearLayoutManager(mContext);
+        fab_add_sport = (FloatingActionButton)view.findViewById(R.id.fab_add_sport);
+        tv_nofind = (TextView)view.findViewById(R.id.tv_nofind);
+        swipeRefresh =(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
+        sv_find = (ScrollView) view.findViewById(R.id.sv_find);
+        return view;
+    }
+  */

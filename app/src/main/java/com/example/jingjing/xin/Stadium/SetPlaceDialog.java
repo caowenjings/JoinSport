@@ -1,4 +1,4 @@
-package com.example.jingjing.xin.User;
+package com.example.jingjing.xin.Stadium;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
