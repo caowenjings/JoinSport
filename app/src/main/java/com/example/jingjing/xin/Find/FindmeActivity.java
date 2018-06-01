@@ -13,10 +13,10 @@ import com.example.jingjing.xin.R;
 import okhttp3.MediaType;
 
 /**
- * Created by jingjing on 2018/5/28.
+ * Created by jingjing on 2018/6/1.
  */
 
-public class FindActivity  extends AppCompatActivity {
+public class FindmeActivity extends AppCompatActivity {
 
     private TextView tv_title;
     private ImageView iv_title;
@@ -28,18 +28,18 @@ public class FindActivity  extends AppCompatActivity {
     private TextView tv_num;
     private TextView tv_time_join;
     private TextView tv_remark;
-
-
     public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         android.support.v7.app.ActionBar actionBar =getSupportActionBar();
         actionBar.hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.find);
+        setContentView(R.layout.find_me);
 
+        initView();
+        initData();
     }
     private void initView(){
 

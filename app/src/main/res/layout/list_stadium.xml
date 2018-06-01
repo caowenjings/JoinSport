@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="500dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,8 @@
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:background="@drawable/searchstadium_biankuang">
 
         <EditText
             android:id="@+id/et_search"
@@ -33,26 +34,24 @@
             android:paddingLeft="20dp"
             android:drawablePadding="30dp"
             android:drawableLeft="@drawable/stadium_search"
-            android:background="@drawable/searchstadium_biankuang"
             android:imeOptions="actionSearch"
             android:lines="1"/>
         <ImageButton
             android:id="@+id/iv_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/back_right_white"
-            android:visibility="gone"/>
+            android:src="@drawable/cha" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_stadium"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 

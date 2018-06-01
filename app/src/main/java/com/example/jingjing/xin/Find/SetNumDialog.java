@@ -86,9 +86,9 @@ public class SetNumDialog extends DialogFragment implements  NumberPicker.OnValu
     private void initNum() {
         numberPicker.setFormatter(this); //格式化数字，需重写format方法
         numberPicker.setOnValueChangedListener(this); //值变化监听事件
-        numberPicker.setMinValue(0);//最小值
+        numberPicker.setMinValue(1);//最小值
         numberPicker.setMaxValue(20);//最大值
-        numberPicker.setValue(0);//设置初始选定值
+        numberPicker.setValue(1);//设置初始选定值
 
         btn_sure.setOnClickListener(new View.OnClickListener() {
             @Override

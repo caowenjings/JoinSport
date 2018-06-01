@@ -33,6 +33,10 @@
             android:value="iIcEspGi02SGFOp47XW9Ov7FhOTaTkxq" />
 
 
+        <activity android:name=".Find.ExitJoinNeed"></activity>
+        <activity android:name=".Find.FindmeActivity"></activity>
+        <activity android:name=".Find.FindActivity"></activity>
+        <activity android:name=".Find.MyPostNeedFlaot"></activity>
         <activity android:name=".Find.PostNeedFalot"></activity>
         <activity android:name=".Find.PostNeed"></activity>
         <activity android:name=".Stadium.StadiumOrderInformation"></activity>

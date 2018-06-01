@@ -1,9 +1,12 @@
 package com.example.jingjing.xin.User;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -18,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
 
@@ -102,6 +106,21 @@ public class Updatepassword extends AppCompatActivity  {
                         if (user.getPassword().equals(oldpassword)){
                             if (newpassword.equals(confrimpassword)) {
                                 updatepassword(userId, newpassword);
+                                new Handler(new Handler.Callback() {
+                                    //处理接收到的消息的方法，防止堵塞主线程
+                                    @Override
+                                    public boolean handleMessage(Message arg0) {
+                                        //实现页面跳转
+                                        Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("user",user);
+                                        intent.putExtras(bundle);
+                                        startActivity(intent);
+                                        finish();
+                                        Toast.makeText(Updatepassword.this, "身份过期了，请重新输入密码", Toast.LENGTH_SHORT).show();
+                                        return false;
+                                    }
+                                }).sendEmptyMessageDelayed(0, 2000);
                             } else {
                                // newpassword.setText("");
                                 et_comfirm_password.setText("");
@@ -170,9 +189,8 @@ public class Updatepassword extends AppCompatActivity  {
                     System.out.println("22");
                     System.out.println(loginresult);
                     if (!"0".equals(loginresult)) {
-
                         Toast.makeText(Updatepassword.this, "修改成功", Toast.LENGTH_SHORT).show();
-                        finish();
+
                     } else {
                         Toast.makeText(Updatepassword.this, "修改失败", Toast.LENGTH_SHORT).show();
                     }

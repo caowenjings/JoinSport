@@ -1,16 +1,15 @@
 package com.example.jingjing.xin.Find;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,10 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,67 +46,50 @@ import okhttp3.Response;
 import static com.example.jingjing.xin.constant.Conatant.URL_PICTURE;
 import static com.example.jingjing.xin.constant.Conatant.URL_SEARCHSTADIUM;
 
-/**
- * Created by jingjing on 2018/5/31.
- */
+@SuppressLint("ValidFragment")
+public class SetStadiumDialog extends DialogFragment{
 
-public class SetStadiumDialog extends DialogFragment {
-
-    // private List<String> place = new ArrayList<>();
-    //private ListView listView;
     private EditText et_search;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private SetStadiumListener setPlaceListener;
     private String city;
-    private Stadium stadium_set;
+    private Stadium set_stadium;
+    private ImageButton iv_delete;
     public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+   private SetStadiumDialog.SetStadiumListener setStadiumListener;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final Window window = getDialog().getWindow();
-        View view = View.inflate(getContext(), R.layout.list_changguan,null);
-        window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        window.setLayout(200,100);
-        et_search = (EditText) view.findViewById(R.id.et_search_text);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv_search);
+        getDialog().setCanceledOnTouchOutside(true);//点击Dialog外围可以消除Dialog
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, 100);//设置高宽
+        getDialog().setCanceledOnTouchOutside(false);
+
+        View view = View.inflate(getContext(), R.layout.list_stadium,null);
+       et_search = (EditText) view.findViewById(R.id.et_search);
+       iv_delete=(ImageButton)view.findViewById(R.id.iv_delete);
+        recyclerView=(RecyclerView)view.findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(getContext());
 
         return view;
 
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {//风格
         super.onCreate(savedInstanceState);
-        setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+        setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, R.style.PlaceDialog);
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {//当acvitity中的oncreate返回后，回调用这里方法
         super.onActivityCreated(savedInstanceState);
 //        city =(String)getActivity().getIntent().getSerializableExtra("city");
-        city = "成都市";
-        System.out.println(city);
-        Search("",city);
-        layoutManager = new LinearLayoutManager(getContext());
-        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH){
-                    String stadiuname = et_search.getText().toString();
-                    System.out.println("11");
-                    Search(stadiuname,city);
-                    System.out.println("22");
-                    return false;
-                }
-                return false;
-            }
-        });
-
+       initStadium();
     }
 
     @NonNull
@@ -117,32 +98,67 @@ public class SetStadiumDialog extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         return dialog;
     }
-    public interface SetStadiumListener{
+
+
+    public interface SetStadiumListener {//设置接口
         void onSetStadiumComplete(Stadium stadium);
     }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try{
-            setPlaceListener = (SetStadiumListener) context;
-        }catch (ClassCastException e){
-            //throw new ClassCastException(context.toString());
+        try {
+            setStadiumListener= (SetStadiumDialog.SetStadiumListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString());
         }
     }
 
+
     @Override
     public void onDestroy() {
-        setPlaceListener.onSetStadiumComplete(stadium_set);
+        setStadiumListener.onSetStadiumComplete(set_stadium);
         super.onDestroy();
     }
 
-    private void Search(String stadiuname,String city) {
-        String SearchUrl = URL_SEARCHSTADIUM;
-        new SearchAsyncTask().execute(SearchUrl,stadiuname,city);
+
+    private void initStadium(){
+        iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_search.setText("");
+            }
+        });
+
+        city = "成都市";
+        System.out.println(city);
+        SetStadiumDialog("",city);
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    String stadiuname = et_search.getText().toString();
+                    if(stadiuname.length()==0){
+                        iv_delete.setVisibility(View.GONE);//如果输入框里面的内容为0,就隐藏
+                    }else {
+                        iv_delete.setVisibility(View.VISIBLE);
+                        SetStadiumDialog(stadiuname,city);
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
     }
-    private class SearchAsyncTask extends AsyncTask<String, Integer, String> {
-        public SearchAsyncTask() {
+
+    private void SetStadiumDialog(String stadiuname,String city) {
+        String SearchUrl = URL_SEARCHSTADIUM;
+        new SetStadiumDialogAsyncTask().execute(SearchUrl,stadiuname,city);
+    }
+
+    private class SetStadiumDialogAsyncTask extends AsyncTask<String, Integer, String> {
+        public  SetStadiumDialogAsyncTask() {
         }
 
         @Override
@@ -213,15 +229,15 @@ public class SetStadiumDialog extends DialogFragment {
                     SetStadiumAdapter adapter = new SetStadiumAdapter(getContext(),mData2);
                     recyclerView.setNestedScrollingEnabled(false);
                     recyclerView.setAdapter(adapter);
-                    adapter.setOnItemClickListener(new SetStadiumAdapter.OnRecyclerViewItemClickListener() {
+
+                    adapter.SetStadiumOnClickListener(new SetStadiumAdapter.SetStadiumOnClickListener() {
                         @Override
-                        public void onItemClick(Stadium stadium) {
-                            stadium_set = stadium;
+                        public void onItemClick(Stadium stadium) {//实现接口
+                            set_stadium = stadium;
                             onDestroy();
-                            onDismiss(getDialog());
+                            onDismiss(getDialog());//关闭窗口
                         }
                     });
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -238,5 +254,4 @@ public class SetStadiumDialog extends DialogFragment {
             }
         }
     }
-
 }

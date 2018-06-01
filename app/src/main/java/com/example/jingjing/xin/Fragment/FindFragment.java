@@ -28,6 +28,7 @@ import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.Need;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.Find.PostNeed;
+import com.example.jingjing.xin.Find.PostNeedFalot;
 import com.example.jingjing.xin.R;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -60,7 +61,6 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     private Banner find_banner;
     private ArrayList findlists;
     private LinearLayout add_sport;
-    private FloatingActionButton fab_add_sport;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefresh;
@@ -90,7 +90,10 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getContext(), PostNeed.class);
+                Intent intent = new Intent(getContext(), PostNeedFalot.class);
+                Bundle mbundle = new Bundle();
+                mbundle.putSerializable("user",user);
+                intent.putExtras(mbundle);
                 startActivity(intent);
             }
         });
@@ -115,22 +118,6 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     @Override
     public void OnBannerClick(int position) {
     }
+
+
 }
-
-
- /*
-
-    @Override
-    protected View initView() {
-        View view = View.inflate(mContext, R.layout.findfragment, null);
-
-        add_sport = (LinearLayout) view.findViewById(R.id.add_sport);
-        recyclerView = (RecyclerView)view.findViewById(R.id.rv_find);
-        layoutManager = new LinearLayoutManager(mContext);
-        fab_add_sport = (FloatingActionButton)view.findViewById(R.id.fab_add_sport);
-        tv_nofind = (TextView)view.findViewById(R.id.tv_nofind);
-        swipeRefresh =(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
-        sv_find = (ScrollView) view.findViewById(R.id.sv_find);
-        return view;
-    }
-  */

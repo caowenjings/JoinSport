@@ -31,7 +31,7 @@
             android:id="@+id/iv_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/back_right_white"
+            android:src="@drawable/cha"
             android:visibility="gone"/>
 
     </LinearLayout>
