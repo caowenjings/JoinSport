@@ -117,7 +117,7 @@ public class Updatepassword extends AppCompatActivity  {
                                         intent.putExtras(bundle);
                                         startActivity(intent);
                                         finish();
-                                        Toast.makeText(Updatepassword.this, "身份过期了，请重新输入密码", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Updatepassword.this, "身份过期了，请重新输入密码登录", Toast.LENGTH_SHORT).show();
                                         return false;
                                     }
                                 }).sendEmptyMessageDelayed(0, 2000);

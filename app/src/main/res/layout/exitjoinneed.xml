@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
@@ -68,7 +68,7 @@
             android:id="@+id/btn_join"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="加 入"
+            android:text="退出加入"
             android:textColor="@color/colorwhite"
             android:textSize="20sp"
             android:background="@color/colorblue"

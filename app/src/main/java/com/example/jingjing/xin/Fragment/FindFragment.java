@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.baidu.location.LocationClient;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Activity.MainActivity;
+import com.example.jingjing.xin.Adapter.FindAdapter;
+import com.example.jingjing.xin.Adapter.PostNeedAdapter;
 import com.example.jingjing.xin.Banner.MyLoader;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.Need;
@@ -65,7 +67,6 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefresh;
     private TextView tv_nofind;
-    private ScrollView sv_find;
     private User user;
     private String city;
 
@@ -77,6 +78,10 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
         View view = View.inflate(mContext, R.layout.findfragment, null);
         find_banner = (Banner) view.findViewById(R.id.baner_find);
         add_sport = (LinearLayout) view.findViewById(R.id.add_sport);
+        recyclerView=(RecyclerView)view.findViewById(R.id.recycler_view);
+        swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe);
+        tv_nofind=(TextView)view.findViewById(R.id.tv_nofind);
+        layoutManager=new LinearLayoutManager(getContext());
         return  view;
     }
 
@@ -86,15 +91,23 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
 
         user = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        add_sport.setOnClickListener(new View.OnClickListener() {
+        add_sport.setOnClickListener(new View.OnClickListener() {//发布需求
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(getContext(), PostNeedFalot.class);
                 Bundle mbundle = new Bundle();
                 mbundle.putSerializable("user",user);
                 intent.putExtras(mbundle);
                 startActivity(intent);
+            }
+        });
+
+        findInformation(user);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//更新
+            @Override
+            public void onRefresh() {
+                initData();
+                swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -120,4 +133,83 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     }
 
 
+
+
+    private void findInformation(User user) {//服务器
+        String loadingUrl = URL_FINDINFORMATION;
+        new findInformationAsyncTask().execute(loadingUrl,String.valueOf(user.getUserId()));
+    }
+
+    private class findInformationAsyncTask extends AsyncTask<String, Integer, String> {
+        public findInformationAsyncTask() {
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Response response = null;
+            int method = 1;
+            String results = null;
+            JSONObject json=new JSONObject();
+            try {
+                json.put("userId",params[1]);
+                json.put("method",method);
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                Request request = new Request.Builder()
+                        .url(params[0])
+                        .post(requestBody)
+                        .build();
+                response=okHttpClient.newCall(request).execute();
+                results=response.body().string();
+                //判断请求是否成功
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            System.out.println("返回的数据："+s);
+            List<Need> mData = new ArrayList<>();
+            if (!"null".equals(s)){
+                try {
+                    JSONArray results = new JSONArray(s);
+                    for( int i=results.length()-1;i>=0;i--){
+                        JSONObject js= results.getJSONObject(i);
+                        Need need = new Need();
+                        need.setNeedId(js.getInt("needId"));
+                        need.setUserId(js.getInt("userId"));
+                        need.setUsername(js.getString("username"));
+                        need.setStadiumname(js.getString("stadiumname"));
+                        need.setTime(js.getString("time"));
+                        need.setNum(js.getInt("num"));
+                        need.setNum_join(js.getInt("num_join"));
+                        need.setRemark(js.getString("remark"));
+                        mData.add(need);
+                    }
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL));
+                    FindAdapter adapter = new FindAdapter(mContext,mData,user,true);
+                    recyclerView.setNestedScrollingEnabled(false);
+                    recyclerView.setAdapter(adapter);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                System.out.println("结果为空");
+                tv_nofind.setText("当前没有任何召集信息");
+                List<Need> mData2 = new ArrayList<>();
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.addItemDecoration(new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL));
+                FindAdapter adapter = new FindAdapter(mContext,mData,user,true);
+                recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setAdapter(adapter);
+            }
+        }
+    }
 }
+

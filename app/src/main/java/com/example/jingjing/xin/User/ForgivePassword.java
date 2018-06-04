@@ -73,7 +73,7 @@ public class ForgivePassword extends AppCompatActivity {
         tv_title=(TextView)findViewById(R.id.tv_title);
         iv_title=(ImageView)findViewById(R.id.iv_title);
         tv_back=(RelativeLayout)findViewById(R.id.tv_back);
-        tv_title.setText("注 册");
+        tv_title.setText("忘记密码");
 
         et_username = (EditText)findViewById(R.id.et_username);
         et_tel = (EditText)findViewById(R.id.et_tel);

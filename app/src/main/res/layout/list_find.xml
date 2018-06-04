@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="220dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,7 +22,6 @@
                 android:id="@+id/user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="mingzi"
                 android:textSize="20sp"
                 android:textColor="@color/colorblack"
                 android:layout_gravity="center_vertical"

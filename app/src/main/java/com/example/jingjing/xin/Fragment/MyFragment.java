@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.User;
+import com.example.jingjing.xin.Find.PostNeedFlaotInformation;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.StadiumCollection;
 import com.example.jingjing.xin.Stadium.StadiumOrderInformation;
@@ -177,7 +178,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent1);
                 break;
             case R.id.btn_need:
-                Intent intent2= new Intent(getContext(), UserInformationActivity.class);
+                Intent intent2= new Intent(getContext(),PostNeedFlaotInformation.class);
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("user",user);
                 intent2.putExtras(bundle2);

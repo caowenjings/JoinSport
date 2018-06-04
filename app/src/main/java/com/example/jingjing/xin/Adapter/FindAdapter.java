@@ -32,6 +32,7 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
     private List<Need> mneed;
     private User muser;
     private boolean mme;
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public FindAdapter(Context context,List<Need> need,User user,boolean me){
@@ -43,6 +44,7 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
 
     static class ViewHolder extends RecyclerView.ViewHolder {
          View findview;
+
         TextView tv_stadiumname;
         TextView tv_username;
         TextView tv_num;
@@ -53,8 +55,8 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
         public ViewHolder(View view) {
             super(view);
             findview = view ;
-            tv_stadiumname = (TextView)view.findViewById(R.id.tv_stadiumname);
-            tv_username = (TextView)view.findViewById(R.id.tv_username);
+            tv_stadiumname = (TextView)view.findViewById(R.id.stadium_name);
+            tv_username = (TextView)view.findViewById(R.id.user_name);
             tv_num = (TextView)view.findViewById(R.id.tv_num);
             tv_time = (TextView)view.findViewById(R.id.tv_time);
             tv_time_join = (TextView)view.findViewById(R.id.tv_num_join);
@@ -104,13 +106,12 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Need need = mneed.get(position);
-
-        holder.tv_stadiumname.setText("场馆名："+need.getStadiumname());
+        final Need need = mneed.get(position);
         holder.tv_username.setText(need.getUsername());
+        holder.tv_stadiumname.setText("场馆名："+need.getStadiumname());
         holder.tv_num.setText("召集人数："+need.getNum());
         holder.tv_time.setText("时间："+need.getTime());
-        holder.tv_time_join.setText("加入人数"+need.getNum_join());
+        holder.tv_time_join.setText("加入人数:"+need.getNum_join());
         holder.tv_remark.setText("备注："+need.getRemark());
 
 
