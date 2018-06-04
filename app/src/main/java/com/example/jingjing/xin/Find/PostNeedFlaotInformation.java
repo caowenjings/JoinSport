@@ -95,14 +95,6 @@ public class PostNeedFlaotInformation extends AppCompatActivity {
         frameLayout_one.removeView(frameLayout_three);
         frameLayout_one.removeView(frameLayout_two);//移除
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
     }
 
 
@@ -127,10 +119,19 @@ public class PostNeedFlaotInformation extends AppCompatActivity {
             }
         });
         myposrneed(user);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);//刷新
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 
-    private void refresh(){
+    private void refresh(){//刷新
         new Thread(new Runnable() {
             @Override
             public void run() {

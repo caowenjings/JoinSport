@@ -24,7 +24,6 @@ import com.baidu.location.LocationClient;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Adapter.FindAdapter;
-import com.example.jingjing.xin.Adapter.FixedRecyclerView;
 import com.example.jingjing.xin.Adapter.PostNeedAdapter;
 import com.example.jingjing.xin.Banner.MyLoader;
 import com.example.jingjing.xin.Base.BaseFragment;
@@ -71,7 +70,6 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     private TextView tv_nofind;
     private User user;
     private String city;
-   // private FixedRecyclerView recyclerView;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 

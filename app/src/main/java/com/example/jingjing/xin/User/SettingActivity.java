@@ -78,6 +78,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         userId = String.valueOf(user.getUserId());
         tv_back.setOnClickListener(this);
         update_password.setOnClickListener(this);
+        about_join.setOnClickListener(this);
 
     }
 

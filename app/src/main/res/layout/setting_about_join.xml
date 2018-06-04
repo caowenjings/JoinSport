@@ -7,7 +7,7 @@
     <include layout="@layout/title_top"></include>
 
     <ImageView
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,11 +28,11 @@
         android:layout_height="wrap_content">
 
         <TextView
-
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_about"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="Join是一个运动预约的系统"/>
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
     </LinearLayout>
 
 </LinearLayout>

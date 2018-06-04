@@ -3,11 +3,13 @@ package com.example.jingjing.xin.Stadium;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,6 +50,10 @@ public class StadiumOrderInformation extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private TextView tv_nobooking;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FrameLayout frame_one;
+    private FrameLayout frame_wu;
+    private FrameLayout frame_you;
     private List<Book> mData = null;
     Book book = new Book();
     private User user;
@@ -77,23 +83,57 @@ public class StadiumOrderInformation extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         tv_nobooking = (TextView) findViewById(R.id.tv_nobooking);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe);
+        frame_one=(FrameLayout)findViewById(R.id.frame_one);
+        frame_wu=(FrameLayout)findViewById(R.id.frame_wu);
+        frame_you=(FrameLayout)findViewById(R.id.frame_you);
         layoutManager = new LinearLayoutManager(this);
 
+        frame_one.removeView(frame_wu);
+        frame_one.removeView(frame_you);//移除
 
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void initDate() {
         user = (User) getIntent().getSerializableExtra("user");
         stadiumOrderInformation(user);
-
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
     }
 
+    private void refresh(){//刷新
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        frame_one.removeView(frame_wu);
+                        frame_one.removeView(frame_you);
+                        stadiumOrderInformation(user);
+                    }
+                });
+            }
+        }).start();
+    }
 
     private void stadiumOrderInformation(User user) {
 
@@ -148,6 +188,7 @@ public class StadiumOrderInformation extends AppCompatActivity {
                         book.setTime_order(js.getString("time_order"));
                         mDate.add(book);
                     }
+                    frame_one.addView(frame_you);//添加布局
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.addItemDecoration(new DividerItemDecoration(StadiumOrderInformation.this, DividerItemDecoration.VERTICAL));
                     OrderInfromationAdapter adapter = new OrderInfromationAdapter(StadiumOrderInformation.this, mDate);
@@ -160,9 +201,9 @@ public class StadiumOrderInformation extends AppCompatActivity {
 
             } else {
                 System.out.println("结果为空");
-
                 List<Book> mData2 = new ArrayList<>();
-                tv_nobooking.setText("没有预约的场地");
+                frame_one.addView(frame_wu);//添加布局
+                tv_nobooking.setText("目前你没有预约场地");
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.addItemDecoration(new DividerItemDecoration(StadiumOrderInformation.this, DividerItemDecoration.VERTICAL));
                 OrderInfromationAdapter adapter = new OrderInfromationAdapter(StadiumOrderInformation.this, mDate);

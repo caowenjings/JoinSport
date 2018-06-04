@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFCF9F3">
 
     <include layout="@layout/title_top"></include>
 
@@ -10,20 +11,18 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@drawable/forgive_biankuang">
+        android:layout_height="wrap_content"
+        android:background="@color/colorwhite">
         <TextView
             android:layout_weight="5"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/colorblack"
             android:textSize="20dp"
             android:text="修改密码"
-            android:layout_marginLeft="20dp"
-            android:padding="5dp"/>
+            android:padding="10dp" />
         <ImageView
             android:id="@+id/update_password"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/back_right"/>
@@ -33,20 +32,18 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@drawable/forgive_biankuang">
+        android:layout_height="wrap_content"
+        android:background="@color/colorwhite">
         <TextView
             android:layout_weight="5"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/colorblack"
             android:textSize="20dp"
             android:text="关于Join"
-            android:padding="5dp"
-            android:layout_marginLeft="20dp"/>
+            android:padding="10dp" />
         <ImageView
             android:id="@+id/about_join"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/back_right"/>
