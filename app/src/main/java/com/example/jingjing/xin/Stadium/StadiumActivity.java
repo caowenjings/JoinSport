@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -19,21 +18,15 @@ import android.widget.ToggleButton;
 
 import com.example.jingjing.xin.Bean.Stadium;
 import com.example.jingjing.xin.Bean.User;
-import com.example.jingjing.xin.Fragment.BookingFragment;
 import com.example.jingjing.xin.R;
-import com.example.jingjing.xin.User.Updateinformation;
-import com.example.jingjing.xin.User.UserInformationActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -46,7 +39,6 @@ import static com.example.jingjing.xin.constant.Conatant.URL_DELETECOLLECTION;
 import static com.example.jingjing.xin.constant.Conatant.URL_INSERTCOLLECTION;
 import static com.example.jingjing.xin.constant.Conatant.URL_ISCOLLECTED;
 import static com.example.jingjing.xin.constant.Conatant.URL_LOADINGORDER;
-import static com.example.jingjing.xin.constant.Conatant.URL_PICTURE;
 
 /**
  * Created by jingjing on 2018/5/21.
@@ -148,7 +140,7 @@ public class StadiumActivity extends AppCompatActivity {
         ImageLoader.getInstance().init(configuration);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnFail(R.drawable.error) // 设置图片加载或解码过程中发生错误显示的图片
-                .showImageOnLoading(R.drawable.loading)
+                .showImageOnLoading(R.drawable.load)
                 .resetViewBeforeLoading(false)  // default 设置图片在加载前是否重置、复位
                 .delayBeforeLoading(1000)  // 下载前的延迟时间
                 .build();

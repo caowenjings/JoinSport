@@ -33,6 +33,7 @@
             android:value="iIcEspGi02SGFOp47XW9Ov7FhOTaTkxq" />
 
 
+        <activity android:name=".Find.FindSport"></activity>
         <activity android:name=".Find.JoinNeedInformation"></activity>
         <activity android:name=".Find.ExitJoinNeed"></activity>
         <activity android:name=".Find.FindmeActivity"></activity>

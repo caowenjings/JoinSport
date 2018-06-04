@@ -103,8 +103,12 @@ public class FindActivity  extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.tv_back:
                 finish();
+                break;
             case R.id.btn_join:
                 findJoin(user.getUserId(),need.getNeedId());
+                break;
+            default:
+                break;
         }
 
     }
@@ -150,8 +154,6 @@ public class FindActivity  extends AppCompatActivity implements View.OnClickList
                 try {
                     JSONObject results = new JSONObject(s);
                     String loginresult = results.getString("result");
-                    System.out.println("22");
-                    System.out.println(loginresult);
                     if("1".equals(loginresult)){
                         Toast.makeText(FindActivity.this,"加入成功",Toast.LENGTH_SHORT).show();
                         finish();

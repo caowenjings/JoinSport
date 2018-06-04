@@ -79,7 +79,7 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(configuration);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnFail(R.drawable.error) // 设置图片加载或解码过程中发生错误显示的图片
-                .showImageOnLoading(R.drawable.loading)
+                .showImageOnLoading(R.drawable.load)
                 .resetViewBeforeLoading(false)  // default 设置图片在加载前是否重置、复位
                 .displayer(new RoundedBitmapDisplayer(20))//设置为圆角弧度
                 .displayer(new FadeInBitmapDisplayer(100))//图片加载好渐入的动画时间

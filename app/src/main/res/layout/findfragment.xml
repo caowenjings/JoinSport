@@ -52,6 +52,7 @@
 
 
       <LinearLayout
+          android:id="@+id/find_sport"
           style="@style/FindLinerloayout">
       <ImageView
           android:layout_marginLeft="4dp"

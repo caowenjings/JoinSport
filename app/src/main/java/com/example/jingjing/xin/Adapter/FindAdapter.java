@@ -26,7 +26,7 @@ import okhttp3.MediaType;
  * Created by jingjing on 2018/6/1.
  */
 
-public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
+public class FindAdapter  extends  RecyclerView.Adapter<FindAdapter.ViewHolder> {
 
     private Context mcontext;
     private List<Need> mneed;
@@ -75,29 +75,29 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();//获取用户点击的position
                 Need need = mneed.get(position);//通过position传给相应的need实例
-                if(mme){
-                    if (muser.getUserId()== need.getUserId()){
+                if (mme) {
+                    if (muser.getUserId() == need.getUserId()) {
                         Intent intent = new Intent(mcontext, FindmeActivity.class);
                         Bundle mBundle = new Bundle();
                         mBundle.putSerializable("need", need);
-                        mBundle.putSerializable("user",muser);
+                        mBundle.putSerializable("user", muser);
                         intent.putExtras(mBundle);
                         mcontext.startActivity(intent);
-                    }else {
-                        Intent intent = new Intent(mcontext, FindActivity.class);
+                    } else {
+                        Intent intent1 = new Intent(mcontext, FindActivity.class);
                         Bundle mBundle = new Bundle();
                         mBundle.putSerializable("need", need);
-                        mBundle.putSerializable("user",muser);
-                        intent.putExtras(mBundle);
-                        mcontext.startActivity(intent);
+                        mBundle.putSerializable("user", muser);
+                        intent1.putExtras(mBundle);
+                        mcontext.startActivity(intent1);
                     }
-                }else {
-                    Intent intent = new Intent(mcontext, ExitJoinNeed.class);
+                } else {
+                    Intent intent2 = new Intent(mcontext, ExitJoinNeed.class);
                     Bundle mBundle = new Bundle();
                     mBundle.putSerializable("need", need);
-                    mBundle.putSerializable("user",muser);
-                    intent.putExtras(mBundle);
-                    mcontext.startActivity(intent);
+                    mBundle.putSerializable("user", muser);
+                    intent2.putExtras(mBundle);
+                    mcontext.startActivity(intent2);
                 }
             }
         });
@@ -113,7 +113,6 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
         holder.tv_time.setText("时间："+need.getTime());
         holder.tv_time_join.setText("加入人数:"+need.getNum_join());
         holder.tv_remark.setText("备注："+need.getRemark());
-
 
     }
 

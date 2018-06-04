@@ -24,6 +24,7 @@ import com.baidu.location.LocationClient;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Adapter.FindAdapter;
+import com.example.jingjing.xin.Adapter.FixedRecyclerView;
 import com.example.jingjing.xin.Adapter.PostNeedAdapter;
 import com.example.jingjing.xin.Banner.MyLoader;
 import com.example.jingjing.xin.Base.BaseFragment;
@@ -63,12 +64,14 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     private Banner find_banner;
     private ArrayList findlists;
     private LinearLayout add_sport;
+    private LinearLayout find_soprt;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefresh;
     private TextView tv_nofind;
     private User user;
     private String city;
+   // private FixedRecyclerView recyclerView;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -78,7 +81,8 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
         View view = View.inflate(mContext, R.layout.findfragment, null);
         find_banner = (Banner) view.findViewById(R.id.baner_find);
         add_sport = (LinearLayout) view.findViewById(R.id.add_sport);
-        recyclerView=(RecyclerView)view.findViewById(R.id.recycler_view);
+        find_soprt=(LinearLayout)view.findViewById(R.id.find_sport);
+        recyclerView=(RecyclerView) view.findViewById(R.id.recycler_view);
         swipeRefresh=(SwipeRefreshLayout)view.findViewById(R.id.swipe);
         tv_nofind=(TextView)view.findViewById(R.id.tv_nofind);
         layoutManager=new LinearLayoutManager(getContext());
@@ -92,6 +96,17 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
         user = (User) getActivity().getIntent().getSerializableExtra("user");
 
         add_sport.setOnClickListener(new View.OnClickListener() {//发布需求
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PostNeedFalot.class);
+                Bundle mbundle = new Bundle();
+                mbundle.putSerializable("user",user);
+                intent.putExtras(mbundle);
+                startActivity(intent);
+            }
+        });
+
+        find_soprt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PostNeedFalot.class);

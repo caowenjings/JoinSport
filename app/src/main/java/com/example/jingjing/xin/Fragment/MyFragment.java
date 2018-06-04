@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.User;
+import com.example.jingjing.xin.Find.JoinNeedInformation;
 import com.example.jingjing.xin.Find.PostNeedFlaotInformation;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.StadiumCollection;
@@ -192,7 +193,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent3);
                 break;
             case R.id.btn_joinedneed:
-                Intent intent4 = new Intent(getContext(), UserInformationActivity.class);
+                Intent intent4 = new Intent(getContext(), JoinNeedInformation.class);
                 Bundle bundle4 = new Bundle();
                 bundle4.putSerializable("user",user);
                 intent4.putExtras(bundle4);

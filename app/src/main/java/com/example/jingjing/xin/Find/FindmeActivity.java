@@ -34,8 +34,6 @@ public class FindmeActivity extends AppCompatActivity {
     private User user;
     private Need need;
 
-    public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
