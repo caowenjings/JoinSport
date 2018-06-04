@@ -2,6 +2,7 @@ package com.example.jingjing.xin.Stadium;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import static com.example.jingjing.xin.constant.Conatant.URL_LOADINGORDER;
  */
 
 public class StadiumActivity extends AppCompatActivity {
+
     private TextView tv_stadiumname;
     private TextView tv_stadiumname1;
     private TextView tv_area;
@@ -56,7 +58,7 @@ public class StadiumActivity extends AppCompatActivity {
     private TextView tv_opentime;
     private Stadium stadium;
     private ImageView tv_back;
-    private ImageView icon_share;
+    private ImageView btn_share;
     private ImageView icon_stadium;
     private RatingBar ratingBar;
     private Button btn_order;
@@ -86,7 +88,7 @@ public class StadiumActivity extends AppCompatActivity {
     private void initview() {
         tv_stadiumname = (TextView) findViewById(R.id.tv_stadiumname);
         tv_back = (ImageView) findViewById(R.id.iv_back);
-        icon_share = (ImageView) findViewById(R.id.btn_share);
+        btn_share = (ImageView) findViewById(R.id.btn_share);
         icon_stadium = (ImageView) findViewById(R.id.icon_stadium);
         tv_stadiumname1 = (TextView) findViewById(R.id.tv_stadiumname1);
         tv_stadiumtype = (TextView) findViewById(R.id.tv_stadiumtype);
@@ -176,6 +178,15 @@ public class StadiumActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               // shareText("分享场馆","热点",stadium.getStadiumname());
+                shareImg("分享场馆","热点",stadium.getStadiumname(),stadium.getMainpicture());
+            }
+        });
     }
 
 
@@ -234,9 +245,9 @@ public class StadiumActivity extends AppCompatActivity {
     private void  collection(int stadiunmId, int userId, boolean flag) {//收藏
         String SearchUrl = null;
         if (flag) {
-            SearchUrl = URL_INSERTCOLLECTION;
+            SearchUrl = URL_INSERTCOLLECTION;//添加收藏
         } else {
-            SearchUrl = URL_DELETECOLLECTION;
+            SearchUrl = URL_DELETECOLLECTION;//取消收藏
         }
         new StadiumCollectionAsyncTask().execute(SearchUrl, String.valueOf(stadiunmId), String.valueOf(userId));
     }
@@ -349,4 +360,47 @@ public class StadiumActivity extends AppCompatActivity {
            }
         }
     }
+/*
+    private void shareText(String dlgTitle, String subject, String content){
+        if (content == null || "".equals(content)) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        if (subject != null && !"".equals(subject)) {
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        }
+
+        intent.putExtra(Intent.EXTRA_TEXT, content);
+
+        // 设置弹出框标题
+        if (dlgTitle != null && !"".equals(dlgTitle)) { // 自定义标题
+            startActivity(Intent.createChooser(intent, dlgTitle));
+        } else { // 系统默认标题
+            startActivity(intent);
+        }
+    }
+    */
+    private void shareImg(String dlgTitle, String subject, String content, String uri) {
+        if (uri == null) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        if (subject != null && !"".equals(subject)) {
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        }
+        if (content != null && !"".equals(content)) {
+            intent.putExtra(Intent.EXTRA_TEXT, content);
+        }
+
+        // 设置弹出框标题
+        if (dlgTitle != null && !"".equals(dlgTitle)) { // 自定义标题
+            startActivity(Intent.createChooser(intent, dlgTitle));
+        } else { // 系统默认标题
+            startActivity(intent);
+        }
+    }
+
 }

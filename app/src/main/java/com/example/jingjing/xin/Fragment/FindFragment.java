@@ -29,6 +29,7 @@ import com.example.jingjing.xin.Banner.MyLoader;
 import com.example.jingjing.xin.Base.BaseFragment;
 import com.example.jingjing.xin.Bean.Need;
 import com.example.jingjing.xin.Bean.User;
+import com.example.jingjing.xin.Find.FindSport;
 import com.example.jingjing.xin.Find.PostNeed;
 import com.example.jingjing.xin.Find.PostNeedFalot;
 import com.example.jingjing.xin.R;
@@ -107,7 +108,7 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
         find_soprt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PostNeedFalot.class);
+                Intent intent = new Intent(getContext(), FindSport.class);
                 Bundle mbundle = new Bundle();
                 mbundle.putSerializable("user",user);
                 intent.putExtras(mbundle);

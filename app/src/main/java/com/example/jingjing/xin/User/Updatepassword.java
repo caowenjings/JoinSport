@@ -122,12 +122,10 @@ public class Updatepassword extends AppCompatActivity  {
                                     }
                                 }).sendEmptyMessageDelayed(0, 2000);
                             } else {
-                               // newpassword.setText("");
                                 et_comfirm_password.setText("");
                                 Toast.makeText(Updatepassword.this, "两次输入密码不一致，请重新输入", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                           // et_password_old.setText("");
                             Toast.makeText(Updatepassword.this, "旧密码输入错误.请重新输入", Toast.LENGTH_SHORT).show();
                         }
 

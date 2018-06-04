@@ -19,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.example.jingjing.xin.Adapter.GridViewAdapter;
 import com.example.jingjing.xin.Adapter.MyPagerAdapter;
 import com.example.jingjing.xin.Adapter.StadiumAdapter;
@@ -32,6 +35,9 @@ import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
 import com.example.jingjing.xin.Stadium.SearchStadium;
 import com.example.jingjing.xin.Stadium.SerachSelectDialog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -60,7 +66,7 @@ import static com.example.jingjing.xin.constant.Conatant.URL_PICTURE;
 public class  BookingFragment extends BaseFragment implements OnBannerListener{
 
     private Banner banner;
-    private ArrayList bannerLists;
+    private ArrayList bannerLists= new ArrayList<>();;
 
     private ViewPager viewPager;
     private List<View> mViewList;
@@ -116,9 +122,9 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener{
         setBanner();//轮播图
         setGridview();//添加GridView
         LoadingGongGao();//下载公告
-    //    requestLocation();//定位
-    //   mLocationClient = new LocationClient(getContext());
-     //  mLocationClient.registerLocationListener(new MyLocationListener());
+      //  requestLocation();//定位
+       // mLocationClient = new LocationClient(getContext());
+      // mLocationClient.registerLocationListener(new MyLocationListener());
 
 
         tv_city.setOnClickListener(new View.OnClickListener() {//选择城市
@@ -172,6 +178,7 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener{
         bannerLists.add(R.drawable.tu_one);
         bannerLists.add(R.drawable.tu_two);
         bannerLists.add(R.drawable.tu_three);
+
 
         banner.setDelayTime(3000);//图片间隔时间
         banner.setImages(bannerLists);//加载图片集合
@@ -506,11 +513,11 @@ public class  BookingFragment extends BaseFragment implements OnBannerListener{
    private void initLocation(){
        LocationClientOption option = new LocationClientOption();
        option.setIsNeedAddress(true);
-       option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+       option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy); //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
        option.setScanSpan(5000);//设置更新的间隔,5秒更新一下当前的位置
        mLocationClient.setLocOption(option);
+       //mLocationClient.setLocOption(localLocationClientOption);
    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
