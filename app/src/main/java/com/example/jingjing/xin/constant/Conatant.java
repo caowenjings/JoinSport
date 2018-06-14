@@ -5,6 +5,8 @@ package com.example.jingjing.xin.constant;
  */
 
 public class Conatant {
+
+   //public static String URL = "http://192.168.1.105:8080/"; //连寝室wifi IP地址
     public static String URL = "http://10.0.2.2:8080/"; //手机热点IP地址(8080是端口号)
     public static String URL_LOGIN  = URL+"Login_Servlet";//登录
     public static String URL_Register = URL+"Register_Servlet";//注册
@@ -30,4 +32,16 @@ public class Conatant {
     public static String URL_ISCOLLECTED = URL+"IsCollected_Servlet";//记住收藏状态
     public static String URL_SEARCHCOLLECTSTADIUM = URL+"SearchCollectStadium_Servlet";//我的收藏
     public static String URL_DELETEJOINFIND = URL+"DeleteJoinFind_Servlet";//取消加入
+
+    public static String URL_SPORTSTYPE = URL+"SportsIcon/";
+    public static String URL_PROFLIE = URL+"Proflie/";//上传头像
+    public static String URL_EVALUATEINFORMATION = URL+"EvaluateInformation_Servlet";
+    public static String URL_EVALUATESTADIUM = URL+"EvaluateStadium_Servlet";
+    public static String URL_SELECTEVALUATION = URL+"SelectEvaluation_Servlet";
+    public static String URL_SPORTS = URL+"LoadingSports_Servlet";
+    public static String URL_CITY = URL+"LoadingCity_Servlet";
+    public static String URL_LOADINGICON = URL+"LoadingIcon_Servlet";
+    public static String URL_GETEVALUATEINFORMATION = URL+"GetEvaluateInformation_Servlet";
+    public static String URL_JOINEDUSERINFORMATION = URL+"JoinedUserInformation_Servlet";
+    public static String URL_UPDATEPROFILE = URL+"UpdateProfile_Servlet";
 }

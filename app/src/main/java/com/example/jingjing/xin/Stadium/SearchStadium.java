@@ -51,6 +51,7 @@ public class SearchStadium extends AppCompatActivity {
     private List<Stadium> mDate;
     private List<Stadium> mDate2;
     private SearchAdapter adapter;
+    private ImageView tv_back;
     private RecyclerView recyclerView;
     private EditText et_Search;
     private ImageView iv_Delete;
@@ -64,13 +65,14 @@ public class SearchStadium extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.one);
+        setContentView(R.layout.stadium_search);
 
         initView();
         initData();
     }
 
     private void initView() {
+        tv_back=(ImageView)findViewById(R.id.tv_back);
         recyclerView=(RecyclerView)findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,6 +87,12 @@ public class SearchStadium extends AppCompatActivity {
         //stadiumname = (String) getIntent().getSerializableExtra("stadiumname");
         city = (String) getIntent().getSerializableExtra("city");
         //stadiumname =String.valueOf(stadium.getStadiumname());
+        tv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         iv_Delete.setOnClickListener(new View.OnClickListener() {//清空editview
             @Override
             public void onClick(View v) {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.jingjing.xin.Bean.Stadium;
@@ -36,12 +37,13 @@ public class SetStadiumAdapter extends RecyclerView.Adapter<SetStadiumAdapter.Vi
         TextView stadiumname;
         TextView stadiumtype;
         TextView stadiumaddress;
+        RatingBar ratingBar;
 
         public ViewHolder(View view) {
             super(view);
             setstadiumAdapter= view;
             stadiumpicture = (ImageView)view.findViewById(R.id.iv_stadiumpicture);
-            // ratingBar = (RatingBar)view.findViewById(R.id.rb_ratbar);
+            ratingBar = (RatingBar)view.findViewById(R.id.rb_ratbar);
             stadiumname = (TextView)view.findViewById(R.id.tv_stadiumname);
             stadiumtype = (TextView)view.findViewById(R.id.tv_stadiumtype);
             stadiumaddress= (TextView)view.findViewById(R.id.tv_stadiumaddress);
@@ -88,6 +90,8 @@ public class SetStadiumAdapter extends RecyclerView.Adapter<SetStadiumAdapter.Vi
         holder.stadiumname.setText(stadium.getStadiumname());
         holder.stadiumaddress.setText(stadium.getAdress());
         holder.stadiumtype.setText( stadium.getStadiumtype());
+        holder.ratingBar.setRating(stadium.getGrade());
+        holder.ratingBar.setIsIndicator(true);
 
     }
 

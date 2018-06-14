@@ -3,17 +3,22 @@ package com.example.jingjing.xin.Activity;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.prefs.PreferenceChangeEvent;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -41,6 +48,7 @@ import okhttp3.Response;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static com.example.jingjing.xin.constant.Conatant.URL_LOGIN;
+import static com.example.jingjing.xin.constant.Conatant.URL_PROFLIE;
 
 /**
  * Created by jingjing on 2018/5/9.
@@ -53,9 +61,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView btn_forgetpwd;
     private Button btn_login;
     private String username,password;
-    private CheckBox remember_pwd;
+    private CheckBox rememberpass;
     private TextView btn_forgive;
+    private ImageView lv_delete;
+    private ImageView lv_delete_one;
     private User user;
+
+    private SharedPreferences.Editor editor;
+    private SharedPreferences preferences;
 
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -67,8 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         android.support.v7.app.ActionBar actionBar =getSupportActionBar();
         actionBar.hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.login);
 
         initView();
@@ -82,16 +94,65 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_register = (TextView) findViewById(R.id.btn_register);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_forgetpwd=(TextView)findViewById(R.id.btn_forgive);
-        remember_pwd=(CheckBox)findViewById(R.id.remember_pwd);
+        rememberpass=(CheckBox)findViewById(R.id.remember_pwd);
         btn_forgive = (TextView) findViewById(R.id.btn_forgive);
+        lv_delete = (ImageView)findViewById(R.id.iv_delete);
+        lv_delete_one = (ImageView)findViewById(R.id.iv_delete_one);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isRemember =preferences.getBoolean("remember_password",false);//获取这个键对应的值，默认flase，当选中时时ture
+        if(isRemember){
+            String username = preferences.getString("username","");//读取值
+            String password = preferences.getString("password","");
+            et_username.setText(username);//将账号和密码都设置到文本框中
+            et_password.setText(password);
+            rememberpass.setChecked(true);
+        }
     }
 
     private void initData() {
         btn_login.setOnClickListener(this);
         btn_register.setOnClickListener(this);
         btn_forgive.setOnClickListener(this);
+        lv_delete_one.setOnClickListener(this);
+        lv_delete.setOnClickListener(this);
+
+        et_username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {//文本框改变之前
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() == 0){
+                    lv_delete.setVisibility(View.GONE);//隐藏
+                }else {
+                    lv_delete.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        et_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() == 0){
+                    lv_delete_one.setVisibility(View.GONE);//隐藏
+                }else {
+                    lv_delete_one.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
+
     public void getEditString(){
         username=et_username.getText().toString();
         password=et_password.getText().toString();
@@ -114,6 +175,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_forgive:
                 showDialog();
+                break;
+            case R.id.iv_delete:
+                et_username.setText("");
+                break;
+            case R.id.iv_delete_one:
+                et_password.setText("");
                 break;
             default:
                 break;
@@ -163,10 +230,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     JSONObject results = new JSONObject(s);
                     String loginresult = results.getString("result");
-                    System.out.println("22");
-                    System.out.println(loginresult);
                     final User user = new User();
                     if (!"0".equals(loginresult)) {
+
+                        editor = preferences.edit();//存储值
+                        if(rememberpass.isChecked()){//检查复选框是否被选中了
+                            editor.putBoolean("remember_password",true);//将flase改为true
+                            editor.putString("username",username);
+                            editor.putString("password",password);
+                        }else {
+                            editor.clear();
+                        }
+                        editor.apply();//提交
+
                         user.setUserId(results.getInt("userId"));
                         user.setUsername(results.getString("username"));
                         user.setPassword(results.getString("password"));
@@ -174,6 +250,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         user.setSex(results.getString("sex"));
                         user.setTel(results.getString("tel"));
                         user.setMyright(results.getString("myRight"));
+                        user.setProflie(URL_PROFLIE+results.optString("proflie"));
                         Toast.makeText(LoginActivity.this, "正在登陆，请稍后", Toast.LENGTH_LONG).show();
                         new Handler(new Handler.Callback() {
                             //处理接收到的消息的方法，防止堵塞主线程

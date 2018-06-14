@@ -8,12 +8,15 @@ public class Stadium implements Serializable {
     private String city;
     private String stadiumtype;
     private String area;
-    private String num;//预约次数
+    private String num;
     private int indoor;
     private int aircondition;
-    private String mainpicture;//图片
+    private String mainpicture;
     private String adress;
     private String opentime;
+    private String closetime;
+    private Float grade;
+    private int iconnum;
 
     public Stadium(String mainpicture, String stadiumname, String stadiumtype, String adress) {
         this.stadiumname = stadiumname;
@@ -23,6 +26,30 @@ public class Stadium implements Serializable {
     }
 
     public Stadium() {
+    }
+
+    public int getIconnum() {
+        return iconnum;
+    }
+
+    public void setIconnum(int iconnum) {
+        this.iconnum = iconnum;
+    }
+
+    public String getClosetime() {
+        return closetime;
+    }
+
+    public void setClosetime(String closetime) {
+        this.closetime = closetime;
+    }
+
+    public Float getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Float grade) {
+        this.grade = grade;
     }
 
     public String getOpentime() {

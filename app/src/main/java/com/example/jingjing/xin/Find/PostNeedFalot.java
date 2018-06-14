@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -146,9 +147,9 @@ public class PostNeedFalot extends AppCompatActivity implements View.OnClickList
 
                     time_xuanze = dateone + timeone;
                     String thistime = myear + "年" + mmonth + "月" + mday + "日";
-
+                    String releasetime =  myear + "年" + mmonth + "月" + mday + "日";
                     InsertNeed(user.getUserId(),set_stadium.getStadiumId(),
-                            time_xuanze,set_num,set_stadium.getStadiumtype(),remark);
+                            time_xuanze,set_num,set_stadium.getStadiumtype(),remark,releasetime);
 
                 } else {
                     Toast.makeText(PostNeedFalot.this, "有选项没有选哟！", Toast.LENGTH_LONG).show();
@@ -180,7 +181,7 @@ public class PostNeedFalot extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onSetPlaceComplete(int num) {//选择人数
+    public void onSetNumComplete(int num) {//选择人数
           set_num = String.valueOf(num);
         tv_num.setText(String.valueOf(num) + "位");
 
@@ -246,9 +247,9 @@ public class PostNeedFalot extends AppCompatActivity implements View.OnClickList
     }
 
 
-    private void InsertNeed(int userId, int stadiumId, String time, String num, String stadiumtype, String remark) {
+    private void InsertNeed(int userId, int stadiumId, String time, String num, String stadiumtype, String remark,String releasetime) {
         String orderURL = URL_INSERTNEED;
-        new InsertNeedAsyncTask().execute(orderURL, String.valueOf(userId), String.valueOf(stadiumId), time, num, stadiumtype, remark);
+        new InsertNeedAsyncTask().execute(orderURL, String.valueOf(userId), String.valueOf(stadiumId), time, num, stadiumtype, remark,releasetime);
     }
 
 
@@ -265,6 +266,7 @@ public class PostNeedFalot extends AppCompatActivity implements View.OnClickList
                 json.put("num", params[4]);
                 json.put("stadiumtype", params[5]);
                 json.put("remark", params[6]);
+                json.put("releasetime", params[7]);
                 OkHttpClient okHttpClient = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 Request request = new Request.Builder()

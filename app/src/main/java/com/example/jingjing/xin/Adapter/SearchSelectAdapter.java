@@ -13,7 +13,7 @@ import com.example.jingjing.xin.R;
 import java.util.List;
 
 
-public class SearchSelectAdapter extends BaseAdapter {
+public class SearchSelectAdapter extends BaseAdapter {//自定义Listviewd的adapter
     private List<String> Datas;
     private Context context;
     private LayoutInflater inflater;

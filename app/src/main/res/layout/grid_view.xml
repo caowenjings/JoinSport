@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!--Gridview-->
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:numColumns="4"
-        android:background="@drawable/background"></GridView>
-</LinearLayout>
+    android:layout_height="200dp"
+    android:numColumns="4">
+</GridView>

@@ -1,13 +1,15 @@
 package com.example.jingjing.xin.Stadium;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.jingjing.xin.Adapter.StadiumEvaluateAdapter;
+import com.example.jingjing.xin.Bean.Evaluation;
 import com.example.jingjing.xin.Bean.Stadium;
 import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
@@ -24,10 +28,13 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -37,9 +44,11 @@ import okhttp3.Response;
 
 
 import static com.example.jingjing.xin.constant.Conatant.URL_DELETECOLLECTION;
+import static com.example.jingjing.xin.constant.Conatant.URL_GETEVALUATEINFORMATION;
 import static com.example.jingjing.xin.constant.Conatant.URL_INSERTCOLLECTION;
 import static com.example.jingjing.xin.constant.Conatant.URL_ISCOLLECTED;
 import static com.example.jingjing.xin.constant.Conatant.URL_LOADINGORDER;
+import static com.example.jingjing.xin.constant.Conatant.URL_PROFLIE;
 
 /**
  * Created by jingjing on 2018/5/21.
@@ -56,10 +65,15 @@ public class StadiumActivity extends AppCompatActivity {
     private TextView tv_aircondition;
     private TextView tv_adress;
     private TextView tv_opentime;
+    private TextView tv_evaluate_num;
+    private TextView tv_noevaluate;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
     private Stadium stadium;
     private ImageView tv_back;
     private ImageView btn_share;
-    private ImageView icon_stadium;
+    private ImageView iv_stadiumpicture;
+    private TextView tv_picture_num;
     private RatingBar ratingBar;
     private Button btn_order;
     private User user;
@@ -89,7 +103,7 @@ public class StadiumActivity extends AppCompatActivity {
         tv_stadiumname = (TextView) findViewById(R.id.tv_stadiumname);
         tv_back = (ImageView) findViewById(R.id.iv_back);
         btn_share = (ImageView) findViewById(R.id.btn_share);
-        icon_stadium = (ImageView) findViewById(R.id.icon_stadium);
+        iv_stadiumpicture = (ImageView) findViewById(R.id.icon_stadium);
         tv_stadiumname1 = (TextView) findViewById(R.id.tv_stadiumname1);
         tv_stadiumtype = (TextView) findViewById(R.id.tv_stadiumtype);
         tv_area = (TextView) findViewById(R.id.tv_area);
@@ -99,9 +113,13 @@ public class StadiumActivity extends AppCompatActivity {
         tv_opentime = (TextView) findViewById(R.id.tv_opentime);
         tv_adress = (TextView) findViewById(R.id.tv_stadiumaddress);
         ratingBar = (RatingBar) findViewById(R.id.rb_ratbar);
+        tv_evaluate_num= (TextView) findViewById(R.id.tv_number);
+        tv_picture_num = (TextView) findViewById(R.id.tv_picture_num);
+        tv_noevaluate = (TextView) findViewById(R.id.tv_noevaluate);
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         btn_order = (Button) findViewById(R.id.btn_order);
         btn_collection = (ToggleButton) findViewById(R.id.btn_collection);
-        getWindow().setStatusBarColor(Color.parseColor("#FF029ACC"));
+        layoutManager = new LinearLayoutManager(this);
 
     }
 
@@ -112,6 +130,8 @@ public class StadiumActivity extends AppCompatActivity {
         stadiumId = String.valueOf(stadium.getStadiumId());
         userId = String.valueOf(user.getUserId());
         iscollection(stadium.getStadiumId(),user.getUserId());//调用方法
+        evaluate(stadium.getStadiumId());
+
 
         System.out.println("userId:" + user.getUserId());
 
@@ -121,12 +141,16 @@ public class StadiumActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         tv_stadiumname.setText(stadium.getStadiumname());
         tv_stadiumname1.setText(stadium.getStadiumname());
         tv_stadiumtype.setText(stadium.getStadiumtype());
         tv_area.setText(stadium.getArea() + "平方米");
         tv_num.setText(stadium.getNum() + "人");
+        tv_picture_num.setText(String.valueOf(stadium.getIconnum()));//强制转换
         tv_opentime.setText(stadium.getOpentime());
+        ratingBar.setRating(stadium.getGrade());
+        ratingBar.setIsIndicator(true);
         if (stadium.getIndoor() == 1) {
             tv_indoor.setText(" 是");
         } else {
@@ -138,6 +162,7 @@ public class StadiumActivity extends AppCompatActivity {
             tv_aircondition.setText(" 否");
         }
         tv_adress.setText(stadium.getCity() + stadium.getAdress());
+
         ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
         ImageLoader.getInstance().init(configuration);
         DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -146,7 +171,7 @@ public class StadiumActivity extends AppCompatActivity {
                 .resetViewBeforeLoading(false)  // default 设置图片在加载前是否重置、复位
                 .delayBeforeLoading(1000)  // 下载前的延迟时间
                 .build();
-        ImageLoader.getInstance().displayImage(stadium.getMainpicture(), icon_stadium, options);
+        ImageLoader.getInstance().displayImage(stadium.getMainpicture(), iv_stadiumpicture, options);
 
         btn_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +210,18 @@ public class StadiumActivity extends AppCompatActivity {
 
                // shareText("分享场馆","热点",stadium.getStadiumname());
                 shareImg("分享场馆","热点",stadium.getStadiumname(),stadium.getMainpicture());
+            }
+        });
+
+        iv_stadiumpicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(StadiumActivity.this, StadiumPicture.class);
+                Bundle mBundle1 = new Bundle();
+                mBundle1.putSerializable("user", user);
+                mBundle1.putSerializable("stadium", stadium);
+                intent1.putExtras(mBundle1);
+                startActivity(intent1);
             }
         });
     }
@@ -231,6 +268,7 @@ public class StadiumActivity extends AppCompatActivity {
                     JSONObject json = new JSONObject(s);
                     String js = json.getString("results");
                     if (!"0".equals(js)) {
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -360,6 +398,85 @@ public class StadiumActivity extends AppCompatActivity {
            }
         }
     }
+
+
+
+    private void evaluate(int stadiumId){//评论
+        String loginUrl = URL_GETEVALUATEINFORMATION;
+        new EvaluateAsyncTask().execute(loginUrl,String.valueOf(stadiumId));
+    }
+
+    private class  EvaluateAsyncTask extends  AsyncTask<String,Integer,String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            Response response = null;
+            String results = null;
+            JSONObject json = new JSONObject();
+            try {
+                json.put("stadiumId", params[1]);
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                Request request = new Request.Builder()
+                        .url(params[0])
+                        .post(requestBody)
+                        .build();
+                response = okHttpClient.newCall(request).execute();
+                results = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            System.out.println("返回的数据：" + s);
+            List<Evaluation> mData = new ArrayList<>();
+            if (!"null".equals(s)) {
+                try {
+                    JSONArray results = new JSONArray(s);
+                    //循环拿出接受的数据并赋值给stadium对象
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject js = results.getJSONObject(i);
+                        Evaluation evaluation = new Evaluation();
+                        evaluation.setUsername(js.getString("username"));
+                        evaluation.setContent(js.getString("content"));
+                       // evaluation.setIcon(URL_PROFLIE+js.getString("proflie"));
+                        evaluation.setGrade(js.getDouble("grade"));
+                        evaluation.setEvaluatetime(js.getString("evaluatetime"));
+                        mData.add(evaluation);
+                    }
+                    tv_evaluate_num.setText("--用户评论("+results.length()+")--");
+                    StadiumEvaluateAdapter adapter = new StadiumEvaluateAdapter (StadiumActivity.this,mData);
+                    recyclerView.setNestedScrollingEnabled(false);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(StadiumActivity.this, DividerItemDecoration.VERTICAL));
+                    recyclerView.setAdapter(adapter);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                System.out.println("结果为空");
+                List<Evaluation> mData2 = new ArrayList<>();
+                tv_evaluate_num.setText("--用户评论("+mData2.size()+")--");
+                tv_noevaluate.setVisibility(View.VISIBLE);
+                tv_noevaluate.setText("暂无评论");
+                recyclerView.addItemDecoration(new DividerItemDecoration(StadiumActivity.this, DividerItemDecoration.VERTICAL));
+                StadiumEvaluateAdapter adapter = new StadiumEvaluateAdapter(StadiumActivity.this, mData2);
+                recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setAdapter(adapter);
+                Toast.makeText(StadiumActivity.this, "该场馆暂无评论", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
 /*
     private void shareText(String dlgTitle, String subject, String content){
         if (content == null || "".equals(content)) {

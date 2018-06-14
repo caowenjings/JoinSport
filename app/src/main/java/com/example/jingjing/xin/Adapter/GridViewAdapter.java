@@ -8,8 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jingjing.xin.Bean.App;
 import com.example.jingjing.xin.Bean.AppGrid;
+import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
@@ -18,13 +23,16 @@ import java.util.List;
  */
 
 public class GridViewAdapter extends BaseAdapter {
-    private List<AppGrid> mDatas;
+    private List<App> mDatas;
     private LayoutInflater inflater;
     private int curIndex;//页数下标,从0开始(当前是第几页)
     private int pageSize;//每一页显示的个数
+    private Context mContext;
+    private User mUser;
 
-    public GridViewAdapter(Context context, List<AppGrid> mDatas, int curIndex, int pageSize) {
+    public GridViewAdapter(Context context, List<App> mDatas, int curIndex, int pageSize) {
         inflater = LayoutInflater.from(context);
+        this.mContext = context;
         this.mDatas = mDatas;
         this.curIndex = curIndex;
         this.pageSize = pageSize;
@@ -62,9 +70,22 @@ public class GridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         int mposition = position + curIndex * pageSize;//计算正确的position = position + curIndex * pageSize，
-        viewHolder.tv.setText(mDatas.get( mposition ).getIconName());
-        viewHolder.iv.setImageResource(mDatas.get( mposition ).getIcon());
+
+        //viewHolder.tv.setText(mDatas.get( mposition ).getIconName());
+        //viewHolder.iv.setImageResource(mDatas.get(mposition).getIcon());
+
+        viewHolder.tv.setText(mDatas.get( mposition ).getName());
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(mContext);
+        ImageLoader.getInstance().init(configuration);
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnFail(R.drawable.error) // 设置图片加载或解码过程中发生错误显示的图片
+                .showImageOnLoading(R.drawable.loading)
+                .resetViewBeforeLoading(false)  // default 设置图片在加载前是否重置、复位
+                .delayBeforeLoading(0)  // 下载前的延迟时间
+                .build();
+        ImageLoader.getInstance().displayImage(mDatas.get(mposition).getIcon(), viewHolder.iv,options);
         return convertView;
     }
     class ViewHolder {
@@ -72,3 +93,4 @@ public class GridViewAdapter extends BaseAdapter {
         public ImageView iv;
     }
 }
+

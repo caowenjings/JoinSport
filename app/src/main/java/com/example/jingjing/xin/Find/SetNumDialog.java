@@ -61,7 +61,7 @@ public class SetNumDialog extends DialogFragment implements  NumberPicker.OnValu
 
 
     public interface SetNumListener {//设置接口
-        void onSetPlaceComplete(int num);
+        void onSetNumComplete(int num);
 
         void onSetStadiumComplete(Stadium stadium);
     }
@@ -93,7 +93,7 @@ public class SetNumDialog extends DialogFragment implements  NumberPicker.OnValu
         btn_sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNumListener.onSetPlaceComplete(num);
+                setNumListener.onSetNumComplete(num);
                 dismiss();
             }
         });

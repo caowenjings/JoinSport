@@ -22,10 +22,7 @@ import com.example.jingjing.xin.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by heziwen on 2017/7/18.
- */
+//自定义搜素城市弹框
 
 public class SerachSelectDialog extends Dialog {
 
@@ -33,21 +30,18 @@ public class SerachSelectDialog extends Dialog {
         super(context, themeResId);
     }
 
-    /**
-     * 设置 Dialog的大小
-     *
-     * @param x 宽比例
-     * @param y 高比例
-     */
+
+   // 设置 Dialog的大小 @param x 宽比例 @param y 高比例
+
     public void setDialogWindowAttr(double x, double y, Activity activity) {
         if (x < 0 || x > 1 || y < 0 || y > 1) {
             return;
         }
-        Window window = this.getWindow();
+        Window window = this.getWindow();//得到窗口
         WindowManager.LayoutParams lp = window.getAttributes();
         WindowManager manager = activity.getWindowManager();
         DisplayMetrics outMetrics = new DisplayMetrics();
-        manager.getDefaultDisplay().getMetrics(outMetrics);
+        manager.getDefaultDisplay().getMetrics(outMetrics);//获取对话框的高度
         int width = outMetrics.widthPixels;
         int height = outMetrics.heightPixels;
         lp.gravity = Gravity.CENTER;
@@ -74,7 +68,6 @@ public class SerachSelectDialog extends Dialog {
         private OnSelectedListiner selectedListiner;
 
         ListView listView;
-        //SearchView searchView ;
         DialogSearchView searchView;
         ImageButton searchBtn;
         ImageButton closeBtn;

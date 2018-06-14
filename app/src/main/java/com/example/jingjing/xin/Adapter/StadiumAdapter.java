@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.jingjing.xin.Bean.Stadium;
@@ -36,6 +37,7 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
         TextView stadiumname;
         TextView stadiumtype;
         TextView stadiumadress;
+        RatingBar ratingBar;
 
         public ViewHolder(View view) {//创建实例
             super(view);
@@ -44,6 +46,7 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
             stadiumname = (TextView) view.findViewById(R.id.tv_stadiumname);
             stadiumadress = (TextView) view.findViewById(R.id.tv_stadiumaddress);
             stadiumtype = (TextView) view.findViewById(R.id.tv_stadiumtype);
+            ratingBar =(RatingBar)view.findViewById(R.id.rb_ratbar);
         }
     }
 
@@ -87,9 +90,12 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
                 .build();//构建完成
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(stadium.getMainpicture(), holder.stadiumpicture,options);
 
+
         holder.stadiumname.setText(stadium.getStadiumname());
         holder.stadiumadress.setText(stadium.getAdress());
         holder.stadiumtype.setText( stadium.getStadiumtype());
+        holder.ratingBar.setRating(stadium.getGrade());
+        holder.ratingBar.setIsIndicator(true);
 
     }
 
@@ -102,6 +108,5 @@ public class StadiumAdapter extends RecyclerView.Adapter<StadiumAdapter.ViewHold
     public int getItemCount() {//获取条目
         return mStadiumlist.size();
     }
-
 
 }

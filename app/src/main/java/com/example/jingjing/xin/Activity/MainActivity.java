@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
             fragmentLists.add(new FindFragment());
             fragmentLists.add(new MyFragment());
             //关联适配器
-            FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragmentLists);
+
+            FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),fragmentLists);
             viewPager.setAdapter(fragmentAdapter);
             viewPager.setOffscreenPageLimit(2);
             setBottomNavigationItem(bottomNavigationBar, 6, 60, 50);

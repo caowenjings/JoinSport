@@ -52,6 +52,7 @@ public class OrderInfromationAdapter extends RecyclerView.Adapter<OrderInfromati
 
     private List<Book> mbooking;
     private Context mcontext;
+    private Book book;
 
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

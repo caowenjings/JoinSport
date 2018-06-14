@@ -16,35 +16,13 @@ import com.example.jingjing.xin.R;
 /**
  * Created by whieenz on 2017/7/19.
  */
-
+//自定义搜索按钮
 public class DialogSearchView extends LinearLayout implements View.OnClickListener {
-
-    /**
-     * 输入框 
-     */
-    private EditText etInput;
-
-    /**
-     * 删除键 
-     */
-    private ImageView ivDelete;
-
-    /**
-     * 上下文对象 
-     */
-    private Context mContext;
-
-    /**
-     * 搜索回调接口 
-     */
-    private DialogSearchViewListener mListener;
-
-    /**
-     * 设置搜索回调接口 
-     *
-     * @param listener 监听者 
-     */
-    public void setDialogSearchViewListener(DialogSearchViewListener listener) {
+    private EditText etInput;//输入框
+    private ImageView ivDelete;//删除键
+    private Context mContext;//上下文对象
+    private DialogSearchViewListener mListener;//搜索回调接口
+    public void setDialogSearchViewListener(DialogSearchViewListener listener) {//设置搜索回调接口监听
         mListener = listener;
     }
 
@@ -74,19 +52,17 @@ public class DialogSearchView extends LinearLayout implements View.OnClickListen
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
             if (!"".equals(charSequence.toString())) {
                 ivDelete.setVisibility(VISIBLE);
-                //更新autoComplete数据
-                if (mListener != null) {
-                    mListener.onQueryTextChange(charSequence + "");
-                }
+                if (mListener != null) { //更新autoComplete数据
+                    mListener.onQueryTextChange(charSequence + ""); }
             } else {
                 ivDelete.setVisibility(GONE);
             }
-
         }
         @Override
         public void afterTextChanged(Editable editable) {
         }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -100,10 +76,7 @@ public class DialogSearchView extends LinearLayout implements View.OnClickListen
                 break;
         }
     }
-    /**
-     * search view回调方法 
-     */
-    public interface DialogSearchViewListener {
+    public interface DialogSearchViewListener {//search view回调方法
         boolean onQueryTextChange(String text);
     }
 }  

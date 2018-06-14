@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -41,12 +42,19 @@ public class About_join extends AppCompatActivity {
         tv_title=(TextView)findViewById(R.id.tv_title);
         iv_title=(ImageView)findViewById(R.id.iv_title);
         tv_back=(RelativeLayout)findViewById(R.id.tv_back);
+
         tv_title.setText("关于Join");
 
         tv_about=(TextView)findViewById(R.id.tv_about);
     }
 
     private void initDate(){
+        tv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         tv_about.setText("Join是一个运动场地的预约系统，是个全部信息在线开放式的互动平台。");
     }

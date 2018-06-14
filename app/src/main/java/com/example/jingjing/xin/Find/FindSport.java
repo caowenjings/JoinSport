@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.jingjing.xin.Adapter.FindAdapter;
 import com.example.jingjing.xin.Bean.Need;
 import com.example.jingjing.xin.Bean.User;
+import com.example.jingjing.xin.Fragment.BookingFragment;
 import com.example.jingjing.xin.Fragment.FindFragment;
 import com.example.jingjing.xin.R;
 
@@ -53,6 +54,7 @@ public class FindSport extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefresh;
     private TextView tv_nofind;
     private User user;
+    private String city;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -97,13 +99,13 @@ public class FindSport extends AppCompatActivity {
                 finish();
             }
         });
-        findInformation(user);
+        findInformation(user,BookingFragment.city);//根据选择的城市来展示相应的动态
     }
 
 
-    private void findInformation(User user) {//服务器
+    private void findInformation(User user,String city) {//服务器
         String loadingUrl = URL_FINDINFORMATION;
-        new findInformationAsyncTask().execute(loadingUrl,String.valueOf(user.getUserId()));
+        new findInformationAsyncTask().execute(loadingUrl,String.valueOf(user.getUserId()),city);
     }
 
     private class findInformationAsyncTask extends AsyncTask<String, Integer, String> {
@@ -119,6 +121,7 @@ public class FindSport extends AppCompatActivity {
             try {
                 json.put("userId",params[1]);
                 json.put("method",method);
+                json.put("city",params[2]);
                 OkHttpClient okHttpClient = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 Request request = new Request.Builder()
@@ -153,7 +156,9 @@ public class FindSport extends AppCompatActivity {
                         need.setTime(js.getString("time"));
                         need.setNum(js.getInt("num"));
                         need.setNum_join(js.getInt("num_join"));
+                        //need.setProflie(URL_PROFLIE+js.optString("userproflie"));
                         need.setRemark(js.getString("remark"));
+                        need.setReleasetime(js.optString("releasetime"));
                         mData.add(need);
                     }
                     recyclerView.setLayoutManager(layoutManager);

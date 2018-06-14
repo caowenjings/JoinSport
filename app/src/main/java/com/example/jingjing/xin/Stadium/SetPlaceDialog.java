@@ -8,15 +8,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jingjing.xin.Adapter.SetPlaceAdapter;
 import com.example.jingjing.xin.Bean.Place;
 import com.example.jingjing.xin.Bean.Stadium;
 import com.example.jingjing.xin.R;
@@ -40,17 +42,20 @@ import static com.example.jingjing.xin.constant.Conatant.URL_PLACENAME;
 
 @SuppressLint("ValidFragment")
 public class SetPlaceDialog extends DialogFragment {
-    private List<String> place = new ArrayList<>();
-    private ListView listView;
-    private TextView tv;
+
+    private List<Place> place = new ArrayList<>();
+    private Place place_set;
     private SetPlaceListener setPlaceListener;
-    private String place1;
     private Stadium mStadium;
+    private String mtime;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @SuppressLint("ValidFragment")
-    public SetPlaceDialog(Stadium mStadium) {
-        this.mStadium = mStadium;
+    public SetPlaceDialog(Stadium Stadium,String time) {
+        this.mStadium = Stadium;
+        this.mtime = time;
     }
 
     @Nullable
@@ -58,7 +63,8 @@ public class SetPlaceDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = View.inflate(getContext(), R.layout.list_place, null);//布局
-        listView = (ListView) view.findViewById(R.id.lv_place);
+        recyclerView=(RecyclerView)view.findViewById(R.id.rv_place);
+        layoutManager = new LinearLayoutManager(getContext());
         return view;
 
     }
@@ -79,7 +85,7 @@ public class SetPlaceDialog extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {//当acvitity中的oncreate返回后，回调用这里方法
         super.onActivityCreated(savedInstanceState);
-        getPlace(mStadium);
+        getPlace(mStadium,mtime);
     }
 
     @NonNull
@@ -92,7 +98,7 @@ public class SetPlaceDialog extends DialogFragment {
 
     public interface SetPlaceListener {//Fragment与activity的通信，内部回调接口
 
-        void onSetPlaceComplete(String placel);//把方法封装在接口中，在activity中需要用到方法的实现这个接口即可
+        void onSetPlaceComplete(Place place);//把方法封装在接口中，在activity中需要用到方法的实现这个接口即可
     }
 
 
@@ -108,13 +114,13 @@ public class SetPlaceDialog extends DialogFragment {
 
     @Override
     public void onDestroy() {
-        setPlaceListener.onSetPlaceComplete(place1);
+        setPlaceListener.onSetPlaceComplete(place_set);
         super.onDestroy();
     }
 
-    private void getPlace(Stadium stadium) {
+    private void getPlace(Stadium stadium,String time) {
         String loadingUrl = URL_PLACENAME;
-        new getPlaceAsyncTask().execute(loadingUrl, String.valueOf(stadium.getStadiumId()));
+        new getPlaceAsyncTask().execute(loadingUrl,String.valueOf(stadium.getStadiumId()),time);
     }
 
     private class getPlaceAsyncTask extends AsyncTask<String, Integer, String> {
@@ -125,17 +131,18 @@ public class SetPlaceDialog extends DialogFragment {
         protected String doInBackground(String... params) {
             Response response = null;
             String results = null;
-            JSONObject json = new JSONObject();
+            JSONObject json=new JSONObject();
             try {
-                json.put("stadiumId", params[1]);
+                json.put("stadiumId",params[1]);
+                json.put("timeorder",params[2]);
                 OkHttpClient okHttpClient = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 Request request = new Request.Builder()
                         .url(params[0])
                         .post(requestBody)
                         .build();
-                response = okHttpClient.newCall(request).execute();
-                results = response.body().string();
+                response=okHttpClient.newCall(request).execute();
+                results=response.body().string();
                 //判断请求是否成功
             } catch (IOException e) {
                 e.printStackTrace();
@@ -147,13 +154,14 @@ public class SetPlaceDialog extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
-            System.out.println("返回的数据：" + s);
+            System.out.println("返回的数据REPLACE："+s);
             List<Place> mData = new ArrayList<>();
-            if (!"null".equals(s)) {
+            if (!"null".equals(s)){
+                //s= s.substring(1);
                 try {
                     JSONArray results = new JSONArray(s);
-                    for (int i = 0; i < results.length(); i++) {
-                        JSONObject js = results.getJSONObject(i);
+                    for(int i=0;i<results.length();i++){
+                        JSONObject js= results.getJSONObject(i);
                         Place place = new Place();
                         place.setStadiumId(js.getInt("stadiumId"));
                         place.setPlaceId(js.getInt("placeId"));
@@ -162,26 +170,29 @@ public class SetPlaceDialog extends DialogFragment {
                         place.setPlacename(js.getString("placename"));
                         mData.add(place);
                     }
-                    for (int i = 0; i < mData.size(); i++) {
-                        place.add(mData.get(i).getPlacename());
-                    }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1, place);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    SetPlaceAdapter adapter = new SetPlaceAdapter(getContext(),mData);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+                    recyclerView.setAdapter(adapter);
+                    adapter.SetPlaceOnclick(new SetPlaceAdapter.SetPlaceOnClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            place1 = place.get(position);
+                        public void onItemClick(Place place) {
+                            place_set =place;
                             onDestroy();
                             onDismiss(getDialog());
                         }
                     });
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
+            }else {
                 System.out.println("结果为空");
-                Toast.makeText(getContext(), "该场馆暂时没添加场地", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"该场馆暂时没添加场地",Toast.LENGTH_LONG).show();
+
             }
         }
     }
+
 }

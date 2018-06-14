@@ -14,18 +14,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_proflie"
                 android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/find_me_touxiang" />
-            <TextView
-                android:id="@+id/user_name"
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/colorblack"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_horizontal"/>
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="22"
+                    android:id="@+id/user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorblack"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal|center_vertical"/>
+                <TextView
+                    android:id="@+id/tv_releasetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorblack"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"/>
+
+
+            </LinearLayout>
         </LinearLayout>
 
 

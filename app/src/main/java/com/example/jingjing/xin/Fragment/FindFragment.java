@@ -20,7 +20,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.example.jingjing.xin.Activity.LoginActivity;
 import com.example.jingjing.xin.Activity.MainActivity;
 import com.example.jingjing.xin.Adapter.FindAdapter;
@@ -54,6 +57,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.example.jingjing.xin.constant.Conatant.URL_FINDINFORMATION;
+import static com.example.jingjing.xin.constant.Conatant.URL_PROFLIE;
 
 /**
  * Created by jingjing on 2018/4/24.
@@ -71,6 +75,7 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     private TextView tv_nofind;
     private User user;
     private String city;
+    private LocationClient mLocationClient;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -94,6 +99,7 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
 
         user = (User) getActivity().getIntent().getSerializableExtra("user");
 
+
         add_sport.setOnClickListener(new View.OnClickListener() {//发布需求
             @Override
             public void onClick(View v) {
@@ -111,12 +117,14 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
                 Intent intent = new Intent(getContext(), FindSport.class);
                 Bundle mbundle = new Bundle();
                 mbundle.putSerializable("user",user);
+                mbundle.putSerializable("city", "成都市");
                 intent.putExtras(mbundle);
                 startActivity(intent);
             }
         });
 
-        findInformation(user);
+        findInformation(user,BookingFragment.city);//根据选择的城市来展示相应的动态
+
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//更新
             @Override
             public void onRefresh() {
@@ -133,6 +141,7 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
         findlists.add(R.drawable.find_one);
         findlists.add(R.drawable.find_two);
         findlists.add(R.drawable.find_three);
+
         find_banner.setDelayTime(3000);//图片间隔时间
         find_banner.setImages(findlists);//加载图片集合
         find_banner.setImageLoader(new MyLoader());
@@ -147,11 +156,9 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
     }
 
 
-
-
-    private void findInformation(User user) {//服务器
+    private void findInformation(User user,String city) {//服务器
         String loadingUrl = URL_FINDINFORMATION;
-        new findInformationAsyncTask().execute(loadingUrl,String.valueOf(user.getUserId()));
+        new findInformationAsyncTask().execute(loadingUrl,String.valueOf(user.getUserId()),city);
     }
 
     private class findInformationAsyncTask extends AsyncTask<String, Integer, String> {
@@ -167,6 +174,7 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
             try {
                 json.put("userId",params[1]);
                 json.put("method",method);
+                json.put("city",params[2]);
                 OkHttpClient okHttpClient = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 Request request = new Request.Builder()
@@ -191,7 +199,7 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
             if (!"null".equals(s)){
                 try {
                     JSONArray results = new JSONArray(s);
-                    for( int i=results.length()-1;i>=0;i--){
+                    for(int i=results.length()-1;i>=0;i--){
                         JSONObject js= results.getJSONObject(i);
                         Need need = new Need();
                         need.setNeedId(js.getInt("needId"));
@@ -201,7 +209,9 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
                         need.setTime(js.getString("time"));
                         need.setNum(js.getInt("num"));
                         need.setNum_join(js.getInt("num_join"));
+                        //need.setProflie(URL_PROFLIE+js.optString("userproflie"));
                         need.setRemark(js.getString("remark"));
+                        need.setReleasetime(js.optString("releasetime"));
                         mData.add(need);
                     }
                     recyclerView.setLayoutManager(layoutManager);
@@ -214,16 +224,15 @@ public class FindFragment extends BaseFragment  implements OnBannerListener{
                     e.printStackTrace();
                 }
             }else {
-                System.out.println("结果为空");
-                tv_nofind.setText("当前没有任何召集信息");
+                System.out.println("结果为空111");
                 List<Need> mData2 = new ArrayList<>();
+                tv_nofind.setText("暂无动态");
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.addItemDecoration(new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL));
-                FindAdapter adapter = new FindAdapter(mContext,mData,user,true);
+                FindAdapter adapter = new FindAdapter(mContext,mData2,user,true);
                 recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setAdapter(adapter);
             }
         }
     }
 }
-

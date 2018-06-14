@@ -17,6 +17,24 @@ public class Need implements Serializable {
     private String remark;
     private String sportstype;
     private int num_join;
+    private String proflie;
+    private String releasetime;
+
+    public String getReleasetime() {
+        return releasetime;
+    }
+
+    public void setReleasetime(String releasetime) {
+        this.releasetime = releasetime;
+    }
+
+    public String getProflie() {
+        return proflie;
+    }
+
+    public void setProflie(String proflie) {
+        this.proflie = proflie;
+    }
 
     public int getNeedId() {
         return needId;

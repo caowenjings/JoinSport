@@ -17,6 +17,7 @@ import com.example.jingjing.xin.Bean.User;
 import com.example.jingjing.xin.Find.JoinNeedInformation;
 import com.example.jingjing.xin.Find.PostNeedFlaotInformation;
 import com.example.jingjing.xin.R;
+import com.example.jingjing.xin.Stadium.EvaluateInformation;
 import com.example.jingjing.xin.Stadium.StadiumCollection;
 import com.example.jingjing.xin.Stadium.StadiumOrderInformation;
 import com.example.jingjing.xin.User.SettingActivity;
@@ -50,6 +51,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     private LinearLayout btn_collect;
     private LinearLayout btn_joinedneed;
     private LinearLayout btn_setting;
+    private LinearLayout btn_evaluate;
     private String userId ;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -66,6 +68,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         btn_collect = (LinearLayout) view.findViewById(R.id.btn_collect);
         btn_joinedneed = (LinearLayout) view.findViewById(R.id.btn_joinedneed);
         btn_setting=(LinearLayout)view.findViewById(R.id.btn_setting);
+        btn_evaluate = (LinearLayout)view.findViewById(R.id.btn_evaluate);
         return view;
 
     }
@@ -80,6 +83,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initData() {
         user = (User) getActivity().getIntent().getSerializableExtra("user");
+        userId = String.valueOf(user.getUserId());
         btn_exit.setOnClickListener(this);
         btn_information.setOnClickListener(this);
         btn_order.setOnClickListener(this);
@@ -87,7 +91,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         btn_collect.setOnClickListener(this);
         btn_joinedneed.setOnClickListener(this);
         btn_setting.setOnClickListener(this);
-        userId = String.valueOf(user.getUserId());
+        btn_evaluate.setOnClickListener(this);
         RefrshUser(userId);//更新
 
 
@@ -206,6 +210,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 bundle5.putSerializable("user",user);
                 intent5.putExtras(bundle5);
                 startActivity(intent5);
+                break;
+            case R.id.btn_evaluate:
+                Intent intent6 = new Intent(getContext(), EvaluateInformation.class);
+                Bundle bundle6= new Bundle();
+                bundle6.putSerializable("user",user);
+                intent6.putExtras(bundle6);
+                startActivity(intent6);
                 break;
             case R.id.btn_exit:
                 Exit();
